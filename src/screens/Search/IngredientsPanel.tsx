@@ -112,7 +112,6 @@ function IngredientsPanel(props: any): JSX.Element {
           icon={'plus'}
           onPress={() => {
             // console.log("hihi");
-
             SheetManager.show('AddIngredientModal', {payload: {type: type, original:original}});
           }}
         />

@@ -21,6 +21,8 @@ import {HorizontalAlignView} from '../../styles';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../common/store';
 import {IngredientChip} from '../../common/IngredientChip';
+import {filterAndSortDatas} from './filterData';
+import {RecipePanel} from './RecipePanel';
 
 /*
 props contians ..
@@ -58,16 +60,29 @@ function SearchResultPage(props: any): JSX.Element {
   );
   //   console.log("excluded", excluded);
   function removeExcluded(target: string) {
-    let copy = {...excluded.filter(item => item != target)};
+    let copy = [...excluded.filter(item => item != target)];
     setExcluded(copy);
   }
   const [included, setIncluded] = useState<string[]>(
     props.route.params.included,
   );
   function removeIncluded(target: string) {
-    let copy = {...included.filter(item => item != target)};
+    let copy = [...included.filter(item => item != target)];
     setIncluded(copy);
   }
+  interface Recipe {
+    name: string;
+    ingredients: string[];
+    image: string;
+  }
+  const [results, setResults] = useState<Recipe[]>(
+    filterAndSortDatas(searchKeyword, included, excluded),
+  );
+  useEffect(() => {
+    let results = filterAndSortDatas(searchKeyword, included, excluded);
+    // console.log(results);
+    setResults(filterAndSortDatas(searchKeyword, included, excluded));
+  }, [searchKeyword, included, excluded]);
   return (
     <View>
       {searchKeyword.length > 0 && (
@@ -116,6 +131,14 @@ function SearchResultPage(props: any): JSX.Element {
             item={item.item}
             color="grey"
           />
+        )}
+      />
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={results}
+        keyExtractor={(item,index) => item.name + index}
+        renderItem={item => (
+          <RecipePanel image={item.item.image} name={item.item.name} />
         )}
       />
     </View>
