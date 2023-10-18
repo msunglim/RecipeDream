@@ -6,7 +6,7 @@ import {
 import { Divider, IconButton } from 'react-native-paper';
 import styled from 'styled-components';
 
-export const commonImage = 'file:///data/user/0/com.myreactnativeapp/cache/rn_image_picker_lib_temp_f5f84ce0-2d3e-4045-8ad1-0c44176cabe8.jpg'
+export const commonImage = 'https://rimage.gnst.jp/livejapan.com/public/article/detail/a/00/00/a0000370/img/basic/a0000370_main.jpg?20201002142956'
 export const themeColorDarkGrey = '#121212';
 export const themeColorGrey = '#282828';
 export const themeColorLightGrey = '#3C3C3C';
@@ -21,24 +21,30 @@ export const HEIGHT = Dimensions.get('window').height;
 export const SmallSizeText = styled(Text)`
   font-size:13px;
   text-align-vertical:center;
+  color:black;
 `;
 export const MiddleSizeText = styled(Text)`
   font-size:15px;
   text-align-vertical:center;
+  color:black;
 `;
 export const LargeSizeText = styled(Text)`
   font-size:17px;
   text-align-vertical:center;
+  color:black;
 `;
 export const HorizontalAlignText = styled(Text)`
   text-align:center;
+  color:black;
 `;
 export const VerticalAlignText = styled(Text)`
   text-align-vertical:center;
+  color:black;
 `;
 export const CenterText = styled(Text)`
   text-align:center;
   text-align-vertical:center;
+  color:black;
 `;
 export const HorizontalAlignView = styled(View)`
   flex-direction:row;
