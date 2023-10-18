@@ -1,11 +1,11 @@
 /* eslint-disable prettier/prettier */
-import {ParamListBase, useNavigation} from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
 import {
   NativeStackNavigationOptions,
   NativeStackNavigationProp,
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
-import React, {useState, useEffect, useLayoutEffect} from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import {
   View,
   Text,
@@ -16,13 +16,13 @@ import {
   Button,
   FlatList,
 } from 'react-native';
-import {MasterHeaderOption} from '../../common/MasterHeaderOption';
-import {HorizontalAlignView} from '../../styles';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../common/store';
-import {IngredientChip} from '../../common/IngredientChip';
-import {filterAndSortDatas} from './filterData';
-import {RecipePanel} from './RecipePanel';
+import { MasterHeaderOption } from '../../common/MasterHeaderOption';
+import { HorizontalAlignView } from '../../styles';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../common/store';
+import { IngredientChip } from '../../common/IngredientChip';
+import { filterAndSortDatas } from './filterData';
+import { RecipePanel } from './RecipePanel';
 
 /*
 props contians ..
@@ -32,6 +32,7 @@ excluded:string[]
 */
 function SearchResultPage(props: any): JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+  // const [isLoading, setIsLoading] = useState<boolean>  => react native paper에서 로딩 이미지 받아와도 좋다.
   function goBack() {
     navigation.goBack();
   }
@@ -136,7 +137,7 @@ function SearchResultPage(props: any): JSX.Element {
       <FlatList
         showsVerticalScrollIndicator={false}
         data={results}
-        keyExtractor={(item,index) => item.name + index}
+        keyExtractor={(item, index) => item.name + index}
         renderItem={item => (
           <RecipePanel image={item.item.image} name={item.item.name} />
         )}

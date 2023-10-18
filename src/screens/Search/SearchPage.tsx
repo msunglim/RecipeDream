@@ -1,11 +1,10 @@
-/* eslint-disable prettier/prettier */
-import {ParamListBase, useNavigation} from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
 import {
   NativeStackNavigationOptions,
   NativeStackNavigationProp,
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
-import React, {useState, useEffect, useLayoutEffect} from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import {
   View,
   Text,
@@ -19,19 +18,19 @@ import {
   KeyboardAvoidingView,
   Keyboard,
 } from 'react-native';
-import {MasterHeaderOption} from '../../common/MasterHeaderOption';
-import {Chip, IconButton, Searchbar} from 'react-native-paper';
-import {RootState, store} from './../../common/store';
-import {Provider, useDispatch, useSelector} from 'react-redux';
-import {resetKeyword, typing} from './searchBarSlice';
-import {SearchBarResults} from './SearchBarResults';
-import {HorizontalAlignView, RedBorderView, SmallSizeText} from '../../styles';
+import { MasterHeaderOption } from '../../common/MasterHeaderOption';
+import { Chip, IconButton, Searchbar } from 'react-native-paper';
+import { RootState, store } from './../../common/store';
+import { Provider, useDispatch, useSelector } from 'react-redux';
+import { resetKeyword, typing } from './searchBarSlice';
+import { SearchBarResults } from './SearchBarResults';
+import { HorizontalAlignView, RedBorderView, SmallSizeText } from '../../styles';
 import IngredientsPanel from './IngredientsPanel';
 import '../../../sheets';
-import {SheetProvider} from 'react-native-actions-sheet';
-import {CommonButton} from '../../common/CommonButton';
+import { SheetProvider } from 'react-native-actions-sheet';
+import { CommonButton } from '../../common/CommonButton';
 /*
-검색 첫페이지 
+검색 첫페이지
 props contians ..
 
 */
@@ -49,7 +48,7 @@ function SearchPage(props: any): JSX.Element {
         'chevron-left',
         '',
         goBack,
-        () => {},
+        () => { },
         'Search',
       ),
     );
@@ -68,10 +67,10 @@ function SearchPage(props: any): JSX.Element {
   const dispatch = useDispatch();
 
   function onChangeSearch(query: string) {
-    dispatch(typing({text: query})); //키워드에 따른 text, results 스테이트 업데이트.
+    dispatch(typing({ text: query })); //키워드에 따른 text, results 스테이트 업데이트.
   }
   function onSearchBarResultPressEvent(item: string) {
-    dispatch(typing({text: item})); //키워드에 따른 text, results 스테이트 업데이트.
+    dispatch(typing({ text: item })); //키워드에 따른 text, results 스테이트 업데이트.
     // dispatch(resetKeyword({}));
     Keyboard.dismiss();
   }
@@ -109,6 +108,7 @@ function SearchPage(props: any): JSX.Element {
             onSubmitEditing={() => {
               // console.log("검색할것", searchKeyword)
             }}
+            autoCapitalize="none"
           />
           {isSearchBarFocused && (
             <SearchBarResults

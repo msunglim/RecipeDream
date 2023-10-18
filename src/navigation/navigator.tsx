@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainPage from '../screens/MainPage';
 import SearchPage from '../screens/Search/SearchPage';
 import SearchResultPage from '../screens/Search/SearchResultPage';
+import RecipeDetail from '../screens/RecipeDetail/RecipeDetail';
 const RootStack = createNativeStackNavigator();
 
 const Navigator = () => {
@@ -20,11 +21,14 @@ const Navigator = () => {
           name="SearchPage"
           component={SearchPage}
         />
-         <RootStack.Screen
+        <RootStack.Screen
           name="SearchResultPage"
           component={SearchResultPage}
         />
-        
+        <RootStack.Screen
+          name="RecipeDetail"
+          component={RecipeDetail}
+        />
       </RootStack.Navigator>
     </NavigationContainer>
   );
