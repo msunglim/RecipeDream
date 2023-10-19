@@ -6,7 +6,7 @@ import {
 import { Divider, IconButton } from 'react-native-paper';
 import styled from 'styled-components';
 
-export const commonImage = 'https://rimage.gnst.jp/livejapan.com/public/article/detail/a/00/00/a0000370/img/basic/a0000370_main.jpg?20201002142956'
+export const commonImage = 'https://media.istockphoto.com/id/528290976/photo/coup-shaped-white-plate.jpg?s=612x612&w=0&k=20&c=VXLeIKJk4GPKwzrDfshEidGPT1UowuMCi028zebps80='
 export const themeColorDarkGrey = '#121212';
 export const themeColorGrey = '#282828';
 export const themeColorLightGrey = '#3C3C3C';

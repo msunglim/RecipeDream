@@ -7,7 +7,8 @@ export function RecipePanel(props: any) {
   let image = props.image;
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   function showRecipeDetail() {
-    navigation.navigate('RecipeDetail', { recipeId: props.recipeId });
+    navigation.navigate('RecipeDetail', { recipeId: props.recipeId, excluded: props.excluded, included: props.included });
+    console.log(props.recipeId)
   }
 
   // function

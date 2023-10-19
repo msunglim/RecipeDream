@@ -155,7 +155,7 @@ function SearchResultPage(props: any): JSX.Element {
         data={results}
         keyExtractor={(item, index) => item.title + index}
         renderItem={item => (
-          <RecipePanel image={item.item.image} name={item.item.title} />
+          <RecipePanel image={item.item.image} name={item.item.title} included={included} excluded={excluded} recipeId={item.item.id}/>
         )}
       />
 
