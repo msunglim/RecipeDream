@@ -24,6 +24,7 @@ import { IngredientChip } from '../../common/IngredientChip';
 import { filterAndSortDatas } from './filterData';
 import { RecipePanel } from './RecipePanel';
 import axios from 'axios';
+import { RECIPE_API_KEY } from '@env';
 
 /*
 props contians ..
@@ -34,7 +35,7 @@ excluded:string[]
 function SearchResultPage(props: any): JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   // const [isLoading, setIsLoading] = useState<boolean>  => react native paper에서 로딩 이미지 받아와도 좋다.
-  const API_KEY = '';
+  const API_KEY = RECIPE_API_KEY;
   const numberOfRecipesShown = 30;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   

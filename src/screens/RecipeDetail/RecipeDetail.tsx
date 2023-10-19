@@ -20,6 +20,7 @@ import { UsedIngredientItem, MissingIngredientItem, InstructionItem } from './Re
 import axios from 'axios';
 import HTML from 'react-native-render-html';
 import { Dimensions } from 'react-native';
+import { RECIPE_API_KEY } from '@env';
 const screenWidth = Dimensions.get('window').width;
 const Container = styled(ScrollView)`
   padding: 16px;
@@ -96,7 +97,7 @@ function RecipeDetail(props: any): JSX.Element {
                 {
                   headers: {
                     'Content-Type': 'application/json',
-                    'X-API-KEY': ''
+                    'X-API-KEY': RECIPE_API_KEY
                   },
                 }
               );
