@@ -1,10 +1,18 @@
 import { HorizontalAlignView, LargeSizeText } from '../../styles';
 import { Image, Text, View, TouchableOpacity } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation, ParamListBase } from '@react-navigation/native';
+
 export function RecipePanel(props: any) {
   let image = props.image;
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+  function showRecipeDetail() {
+    navigation.navigate('RecipeDetail', { recipeId: props.recipeId });
+  }
+
   // function
   return (
-    <TouchableOpacity onPress={() => console.log('ididid is')}>
+    <TouchableOpacity onPress={showRecipeDetail}>
       <HorizontalAlignView>
         <Image
           style={{

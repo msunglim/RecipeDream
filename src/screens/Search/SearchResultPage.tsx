@@ -23,6 +23,7 @@ import { RootState } from '../../common/store';
 import { IngredientChip } from '../../common/IngredientChip';
 import { filterAndSortDatas } from './filterData';
 import { RecipePanel } from './RecipePanel';
+import axios from 'axios';
 
 /*
 props contians ..
@@ -33,6 +34,10 @@ excluded:string[]
 function SearchResultPage(props: any): JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   // const [isLoading, setIsLoading] = useState<boolean>  => react native paper에서 로딩 이미지 받아와도 좋다.
+  const API_KEY = '';
+  const numberOfRecipesShown = 30;
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  
   function goBack() {
     navigation.goBack();
   }
@@ -76,13 +81,24 @@ function SearchResultPage(props: any): JSX.Element {
     ingredients: string[];
     image: string;
   }
-  const [results, setResults] = useState<Recipe[]>(
-    filterAndSortDatas(searchKeyword, included, excluded),
-  );
+  const [results, setResults] = useState<any[]>([]);
   useEffect(() => {
-    let results = filterAndSortDatas(searchKeyword, included, excluded);
-    // console.log(results);
-    setResults(filterAndSortDatas(searchKeyword, included, excluded));
+    const fetchRecipes = async () => {
+      try {
+        const ingredients = included.join(",+");  // 사용자가 입력한 재료를 쉼표로 구분하여 연결
+        const response = await axios.get(
+          `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=${numberOfRecipesShown}&apiKey=${API_KEY}`
+        );
+        // console.log("Before setting results:", results);
+        // console.log(response.data);
+        setResults(response.data);
+        // console.log("After setting results:", results);
+      } catch (error) {
+        console.error("API call error:", error);
+      }
+    };
+
+    fetchRecipes();
   }, [searchKeyword, included, excluded]);
   return (
     <View>
@@ -137,11 +153,12 @@ function SearchResultPage(props: any): JSX.Element {
       <FlatList
         showsVerticalScrollIndicator={false}
         data={results}
-        keyExtractor={(item, index) => item.name + index}
+        keyExtractor={(item, index) => item.title + index}
         renderItem={item => (
-          <RecipePanel image={item.item.image} name={item.item.name} />
+          <RecipePanel image={item.item.image} name={item.item.title} />
         )}
       />
+
     </View>
   );
 }

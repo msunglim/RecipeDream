@@ -106,10 +106,6 @@ function RecipeDetail(props: Props): JSX.Element {
     if (loading) {
         return <Text>Loading...</Text>;
     }
-
-    function goBack() {
-        navigation.goBack();
-    }
     function moveForward() {
 
     }

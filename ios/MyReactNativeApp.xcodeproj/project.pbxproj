@@ -335,7 +335,6 @@
 				0C0B39672AE04245002EFE7C /* AntDesign.ttf in Resources */,
 				0C0B39702AE04245002EFE7C /* SimpleLineIcons.ttf in Resources */,
 				0C0B396D2AE04245002EFE7C /* Zocial.ttf in Resources */,
-				E024AA06588645FB8568956A /* MaterialIcons.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
