@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import {useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -10,9 +10,9 @@ import ActionSheet, {
   ActionSheetRef,
   SheetProps,
 } from 'react-native-actions-sheet';
-import { Button, Searchbar } from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../common/store';
+import {Button, Searchbar} from 'react-native-paper';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../../common/store';
 import {
   addExcluded,
   addIncluded,
@@ -20,10 +20,16 @@ import {
   resetKeyword,
   typing,
 } from '../ingredientSlice';
-import { SearchBarResults } from '../SearchBarResults';
-import { SelectedIngredients } from '../SelectedIngredients';
-import { HorizontalAlignView } from '../../../styles';
-import { CommonButton } from '../../../common/CommonButton';
+import {SearchBarResults} from '../SearchBarResults';
+import {SelectedIngredients} from '../SelectedIngredients';
+import {
+  CenterView,
+  ExcluseMeHorizontally,
+  HorizontalAlignView,
+  MiddleSizeText,
+  SmallSizeText,
+} from '../../../styles';
+import {CommonButton} from '../../../common/CommonButton';
 
 /**
  *
@@ -31,6 +37,7 @@ import { CommonButton } from '../../../common/CommonButton';
  * + 버튼 눌렀을 때 뜨는 것
  * type: boolean
  * original: string[] when cancelled, set it back
+ * helperText: string
  * @returns
  */
 function AddIngredientModal(props: SheetProps) {
@@ -53,7 +60,7 @@ function AddIngredientModal(props: SheetProps) {
   function cancel() {
     // console.log("orignal", original);
 
-    dispatch(cancelAdding({ type: type, original: original })); //원래 있던걸로 리턴..
+    dispatch(cancelAdding({type: type, original: original})); //원래 있던걸로 리턴..
     actionSheetRef.current?.hide();
   }
   function done() {
@@ -62,16 +69,16 @@ function AddIngredientModal(props: SheetProps) {
   const dispatch = useDispatch();
 
   function onChangeSearch(query: string) {
-    dispatch(typing({ text: query })); //키워드에 따른 text, results 스테이트 업데이트.
+    dispatch(typing({text: query})); //키워드에 따른 text, results 스테이트 업데이트.
   }
   const [isSearchBarFocused, setIsSearchBarFocused] = useState<boolean>(false);
   function onSearchBarResultPressEvent(item: string) {
     if (type == 0) {
       //add to my ingredients
-      dispatch(addIncluded({ ingredient: item })); //키워드에 따른 text, results 스테이트 업데이트.
+      dispatch(addIncluded({ingredient: item})); //키워드에 따른 text, results 스테이트 업데이트.
     } else if (type == 1) {
       //add to exlcuded ingredients
-      dispatch(addExcluded({ ingredient: item })); //키워드에 따른 text, results 스테이트 업데이트.
+      dispatch(addExcluded({ingredient: item})); //키워드에 따른 text, results 스테이트 업데이트.
     }
     dispatch(resetKeyword({}));
   }
@@ -88,10 +95,15 @@ function AddIngredientModal(props: SheetProps) {
             // width: 400,
             // height: 400,
             height: '100%',
+            padding: '10%',
           }}>
+          <MiddleSizeText>{props.payload.helperText}</MiddleSizeText>
           <Searchbar
+          style={{
+            marginTop: '5%',
+          }}
             keyboardType="default"
-            placeholder="Search"
+            placeholder="Search for ingredients"
             onChangeText={onChangeSearch}
             value={searchKeyword.toString()}
             onFocus={() => {
@@ -117,35 +129,30 @@ function AddIngredientModal(props: SheetProps) {
             // removeIngredient={removeIngredient}
             type={type}
           />
-
-          <HorizontalAlignView
-            style={{
-              justifyContent: 'center',
-              alignContent: 'center',
-            }}>
-            {/* <Button
+          <CenterView
+          style={{
+            marginTop:'20%'
+          }}
+          >
+            <HorizontalAlignView
               style={{
-                width: 100,
-              }}
-              mode="contained"
-              onPress={() => {
-                cancel();
+                justifyContent: 'center',
+                alignContent: 'center',
               }}>
-              Cancel
-            </Button> */}
-            {/* <Button
-              style={{
-                width: 100,
-              }}
-              mode="contained"
-              onPress={() => {
-                done();
-              }}>
-              Save
-            </Button> */}
-            <CommonButton text={'Cancel'} onPressEvent={cancel} />
-            <CommonButton text={'Save'} onPressEvent={done} />
-          </HorizontalAlignView>
+              <CenterView
+                style={{
+                  width: '50%',
+                }}>
+                <CommonButton text={'Cancel'} onPressEvent={cancel} />
+              </CenterView>
+              <CenterView
+                style={{
+                  width: '50%',
+                }}>
+                <CommonButton text={'Save'} onPressEvent={done} />
+              </CenterView>
+            </HorizontalAlignView>
+          </CenterView>
         </View>
       </TouchableWithoutFeedback>
     </ActionSheet>

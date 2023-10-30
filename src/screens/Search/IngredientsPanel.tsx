@@ -77,10 +77,10 @@ function IngredientsPanel(props: any): JSX.Element {
   //   }
   // }
   const original: string[] = useSelector((state: RootState) =>
-  type == 0
-    ? state.ingredient.includedIngredients
-    : state.ingredient.excludedIngredients,
-);
+    type == 0
+      ? state.ingredient.includedIngredients
+      : state.ingredient.excludedIngredients,
+  );
   return (
     <View>
       {/* <Searchbar
@@ -104,17 +104,32 @@ function IngredientsPanel(props: any): JSX.Element {
         />
       )} */}
 
-      <HorizontalAlignView>
+      <HorizontalAlignView
+        style={{
+          justifyContent: 'space-between'
+        }}
+        >
         <SmallSizeText>
           {type == 0 ? 'My Ingredients' : 'Must exclude'}
         </SmallSizeText>
-        <IconButton
-          icon={'plus'}
-          onPress={() => {
-            // console.log("hihi");
-            SheetManager.show('AddIngredientModal', {payload: {type: type, original:original}});
-          }}
-        />
+        <View>
+          <IconButton
+            icon={'plus'}
+            onPress={() => {
+              // console.log("hihi");
+              SheetManager.show('AddIngredientModal', {
+                payload: {
+                  type: type,
+                  original: original,
+                  helperText:
+                    type == 0
+                      ? 'Search for ingredients you want recipes to include.'
+                      : 'Search for ingredients you want recipes to exclude.',
+                },
+              });
+            }}
+          />
+        </View>
       </HorizontalAlignView>
       <SelectedIngredients
         // addedIngredients={addedIngredients}

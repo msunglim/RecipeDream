@@ -1,5 +1,5 @@
 import {Chip} from 'react-native-paper';
-import {RedBorderView} from '../../styles';
+import {IncludedChipColor, RedBorderView} from '../../styles';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../common/store';
 import {removeIncluded, removeExcluded} from './ingredientSlice';
@@ -39,6 +39,8 @@ export function SelectedIngredients(props: any): JSX.Element {
             backgroundColor: '#CCCCCC',
             borderRadius: 10,
             padding: '2%',
+            marginVertical:'5%',
+            // marginBottom:'5%'
           }}>
           {addedIngredients.map((item: any, index: number) => (
             // <Chip
@@ -59,7 +61,7 @@ export function SelectedIngredients(props: any): JSX.Element {
                 removeIngredient(item);
               }}
               item={item}
-              color={type==0?'green': 'grey'}
+              color={type==0?IncludedChipColor: 'grey'}
             />
           ))}
         </View>

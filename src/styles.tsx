@@ -14,7 +14,7 @@ export const themeColorSuperLightGrey = '#666666';
 export const themeColorBlue = '#1E1E1E';
 export const themeColorLightGreen = '#93FF3F';
 export const themeColorSuperLightGreen = '#9EFFA9'
-
+export const IncludedChipColor = '#d1edf2'
 export const WIDTH = Dimensions.get('window').width;
 export const HEIGHT = Dimensions.get('window').height;
 
@@ -59,3 +59,13 @@ export const BlueBorderView = styled(View)`
   border-width:1px;
   border-color:blue;
 `;
+
+export const ExcluseMeHorizontally = styled(View)`
+  width: 20%;
+`
+
+export const CenterView = styled(View)`
+  justify-content:center;
+  align-content:center;
+  align-items:center;
+`
