@@ -1,11 +1,11 @@
 /* eslint-disable prettier/prettier */
-import { ParamListBase, useNavigation } from '@react-navigation/native';
+import {ParamListBase, useNavigation} from '@react-navigation/native';
 import {
   NativeStackNavigationOptions,
   NativeStackNavigationProp,
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {
   View,
   Text,
@@ -16,15 +16,19 @@ import {
   Button,
   FlatList,
 } from 'react-native';
-import { MasterHeaderOption } from '../../common/MasterHeaderOption';
-import { HorizontalAlignView } from '../../styles';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../common/store';
-import { IngredientChip } from '../../common/IngredientChip';
-import { filterAndSortDatas } from './filterData';
-import { RecipePanel } from './RecipePanel';
+import {MasterHeaderOption} from '../../common/MasterHeaderOption';
+import {
+  HorizontalAlignView,
+  IncludedChipColor,
+  SmallSizeText,
+} from '../../styles';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../common/store';
+import {IngredientChip} from '../../common/IngredientChip';
+import {filterAndSortDatas} from './filterData';
+import {RecipePanel} from './RecipePanel';
 import axios from 'axios';
-import { RECIPE_API_KEY } from '@env';
+import {RECIPE_API_KEY} from '@env';
 
 /*
 props contians ..
@@ -38,7 +42,7 @@ function SearchResultPage(props: any): JSX.Element {
   const API_KEY = RECIPE_API_KEY;
   const numberOfRecipesShown = 30;
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  
+
   function goBack() {
     navigation.goBack();
   }
@@ -86,23 +90,26 @@ function SearchResultPage(props: any): JSX.Element {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const ingredients = included.join(",+");  // 사용자가 입력한 재료를 쉼표로 구분하여 연결
+        const ingredients = included.join(',+'); // 사용자가 입력한 재료를 쉼표로 구분하여 연결
         const response = await axios.get(
-          `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=${numberOfRecipesShown}&apiKey=${API_KEY}`
+          `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=${numberOfRecipesShown}&apiKey=${API_KEY}`,
         );
         // console.log("Before setting results:", results);
         // console.log(response.data);
         setResults(response.data);
         // console.log("After setting results:", results);
       } catch (error) {
-        console.error("API call error:", error);
+        console.error('API call error:', error);
       }
     };
 
     fetchRecipes();
   }, [searchKeyword, included, excluded]);
   return (
-    <View>
+    <View
+      style={{
+        padding: '10%',
+      }}>
       {searchKeyword.length > 0 && (
         <View
           style={{
@@ -110,56 +117,81 @@ function SearchResultPage(props: any): JSX.Element {
             alignItems: 'center',
             justifyContent: 'flex-start',
           }}>
-          <IngredientChip
-            onCloseEvent={() => {
-              setSearchKeyword('');
-            }}
-            item={searchKeyword}
-          />
+          <HorizontalAlignView>
+            <SmallSizeText>
+              {searchKeyword.length > 0 ? 'Recipes of ' : ''}
+            </SmallSizeText>
+            <IngredientChip
+              onCloseEvent={() => {
+                setSearchKeyword('');
+              }}
+              item={searchKeyword}
+            />
+          </HorizontalAlignView>
         </View>
       )}
-
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        horizontal
-        data={included}
-        keyExtractor={item => item.toString()}
-        renderItem={item => (
-          <IngredientChip
-            //   index={index}
-            onCloseEvent={() => {
-              removeIncluded(item.item);
-            }}
-            item={item.item}
-            color="green"
+      {included.length > 0 && (
+        <HorizontalAlignView
+          style={{
+            marginTop: '5%',
+          }}>
+          <SmallSizeText>Included:</SmallSizeText>
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            data={included}
+            keyExtractor={item => item.toString()}
+            renderItem={item => (
+              <IngredientChip
+                //   index={index}
+                onCloseEvent={() => {
+                  removeIncluded(item.item);
+                }}
+                item={item.item}
+                color={IncludedChipColor}
+              />
+            )}
           />
-        )}
-      />
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        horizontal
-        data={excluded}
-        keyExtractor={item => item.toString()}
-        renderItem={item => (
-          <IngredientChip
-            //   index={index}
-            onCloseEvent={() => {
-              removeExcluded(item.item);
-            }}
-            item={item.item}
-            color="grey"
+        </HorizontalAlignView>
+      )}
+      {excluded.length > 0 && (
+        <HorizontalAlignView
+          style={{
+            marginVertical: '5%',
+          }}>
+          <SmallSizeText>Excluded:</SmallSizeText>
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            data={excluded}
+            keyExtractor={item => item.toString()}
+            renderItem={item => (
+              <IngredientChip
+                //   index={index}
+                onCloseEvent={() => {
+                  removeExcluded(item.item);
+                }}
+                item={item.item}
+                color="grey"
+              />
+            )}
           />
-        )}
-      />
+        </HorizontalAlignView>
+      )}
       <FlatList
         showsVerticalScrollIndicator={false}
         data={results}
         keyExtractor={(item, index) => item.title + index}
         renderItem={item => (
-          <RecipePanel image={item.item.image} name={item.item.title} included={included} excluded={excluded} recipeId={item.item.id}/>
+          <RecipePanel
+            image={item.item.image}
+            name={item.item.title}
+            included={included}
+            excluded={excluded}
+            recipeId={item.item.id}
+          />
         )}
       />
-
     </View>
   );
 }

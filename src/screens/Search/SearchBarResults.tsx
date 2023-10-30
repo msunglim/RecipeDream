@@ -9,6 +9,7 @@ import {Text} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../common/store';
 import {typing} from './searchBarSlice';
+import { MiddleSizeText } from '../../styles';
 /**
  * 검색창에 뜨는 추천검색어들
  * @param props 
@@ -47,7 +48,7 @@ export function SearchBarResults(props: any) {
           style={{
             borderColor: 'grey',
             borderWidth: 1,
-            height: 30,
+            height: 50,
             justifyContent: 'center',
           }}
           onPress={() => {
@@ -56,7 +57,7 @@ export function SearchBarResults(props: any) {
             // Keyboard.dismiss();
           }}
           activeOpacity={1}>
-          <Text>{item}</Text>
+          <MiddleSizeText>{item}</MiddleSizeText>
         </TouchableOpacity>
       )}
     />
