@@ -29,6 +29,7 @@ import {filterAndSortDatas} from './filterData';
 import {RecipePanel} from './RecipePanel';
 import axios from 'axios';
 import {RECIPE_API_KEY} from '@env';
+import { PageRemainTimer } from '../../common/PageRemainTimer';
 
 /*
 props contians ..
@@ -42,12 +43,15 @@ function SearchResultPage(props: any): JSX.Element {
   const API_KEY = RECIPE_API_KEY;
   const numberOfRecipesShown = 30;
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const [visitedTime,setVisitedTime] =useState<Date>(new Date())
   function goBack() {
+    PageRemainTimer(visitedTime, 'searchResultPage')
+
     navigation.goBack();
   }
+  
   function moveForward() {
-    // navigation.navigate()
+    // navigation.navigate() 
   }
   useLayoutEffect(() => {
     navigation.setOptions(
@@ -189,6 +193,7 @@ function SearchResultPage(props: any): JSX.Element {
             included={included}
             excluded={excluded}
             recipeId={item.item.id}
+            visitedTime={visitedTime}
           />
         )}
       />

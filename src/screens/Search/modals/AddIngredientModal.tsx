@@ -30,6 +30,7 @@ import {
   SmallSizeText,
 } from '../../../styles';
 import {CommonButton} from '../../../common/CommonButton';
+import { ComponentUsedCounter } from '../../../common/ComponentUsedCounter';
 
 /**
  *
@@ -59,11 +60,14 @@ function AddIngredientModal(props: SheetProps) {
   const original = props.payload.original;
   function cancel() {
     // console.log("orignal", original);
-
+    setCancelButtonCounter(cancelButtonCounter+1)
+    ComponentUsedCounter(cancelButtonCounter+1, 'AddIngredientModalCancelButton')
     dispatch(cancelAdding({type: type, original: original})); //원래 있던걸로 리턴..
     actionSheetRef.current?.hide();
   }
   function done() {
+    setCancelButtonCounter(saveButtonCounter+1)
+    ComponentUsedCounter(saveButtonCounter+1, 'AddIngredientModalSaveButton')
     actionSheetRef.current?.hide();
   }
   const dispatch = useDispatch();
@@ -82,6 +86,10 @@ function AddIngredientModal(props: SheetProps) {
     }
     dispatch(resetKeyword({}));
   }
+  const [searchIngredientBarCounter, setSearchIngredientBarCounter] =
+  useState<number>(0);
+  const [cancelButtonCounter, setCancelButtonCounter] = useState<number>(0)
+  const [saveButtonCounter, setSaveButtonCounter] = useState<number>(0)
   return (
     <ActionSheet ref={actionSheetRef}>
       {/* <SearchIngredients
@@ -107,6 +115,8 @@ function AddIngredientModal(props: SheetProps) {
             onChangeText={onChangeSearch}
             value={searchKeyword.toString()}
             onFocus={() => {
+              setSearchIngredientBarCounter(searchIngredientBarCounter+1)
+              ComponentUsedCounter(searchIngredientBarCounter+1, 'searchIngredientBar')
               setIsSearchBarFocused(true);
             }}
             onBlur={() => {
@@ -122,6 +132,8 @@ function AddIngredientModal(props: SheetProps) {
             <SearchBarResults
               searchResults={searchResults}
               onPressEvent={onSearchBarResultPressEvent}
+              relatedRecommendedSearchResultPressedCounter={props.payload.relatedRecommendedSearchResultPressedCounter}
+              setRelatedRecommendedSearchResultPressedCounter={props.payload.setRelatedRecommendedSearchResultPressedCounter}
             />
           )}
           <SelectedIngredients
