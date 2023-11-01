@@ -10,11 +10,15 @@ import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../common/store';
 import {typing} from './searchBarSlice';
 import { MiddleSizeText } from '../../styles';
+import { useState } from 'react';
+import { ComponentUsedCounter } from '../../common/ComponentUsedCounter';
 /**
  * 검색창에 뜨는 추천검색어들
  * @param props 
  * searchResults: string[]
  * onPressEvent: ()=>{}
+ * relatedRecommendedSearchResultPressedCounter:number
+  setRelatedRecommendedSearchResultPressedCounter:setState
  * @returns 
  */
 export function SearchBarResults(props: any) {
@@ -27,6 +31,7 @@ export function SearchBarResults(props: any) {
   // function onChangeSearch(query: string) {
   //   dispatch(typing({text: query})); //키워드에 따른 text, results 스테이트 업데이트.
   // }
+  
   return (
     <FlatList
       keyboardShouldPersistTaps="handled"
@@ -53,6 +58,8 @@ export function SearchBarResults(props: any) {
           }}
           onPress={() => {
             props.onPressEvent(item)
+            props.setRelatedRecommendedSearchResultPressedCounter(props.relatedRecommendedSearchResultPressedCounter+1)
+            ComponentUsedCounter(props.relatedRecommendedSearchResultPressedCounter+1, 'relatedRecommendedKeyword')
             // onChangeSearch(item);
             // Keyboard.dismiss();
           }}

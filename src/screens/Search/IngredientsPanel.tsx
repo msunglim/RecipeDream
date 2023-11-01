@@ -35,10 +35,13 @@ import {
 import {SheetManager, SheetProvider} from 'react-native-actions-sheet';
 import '../../../sheets';
 import {SelectedIngredients} from './SelectedIngredients';
+import {ComponentUsedCounter} from '../../common/ComponentUsedCounter';
 /*
 include 든지 exclude든지 +와 함께 보이는것.
 props contians ..
 type: 0 for my ingredients, 1 for excluded ingredients
+relatedRecommendedSearchResultPressedCounter:number
+setRelatedRecommendedSearchResultPressedCounter:setState
 */
 function IngredientsPanel(props: any): JSX.Element {
   const type = props.type;
@@ -81,6 +84,9 @@ function IngredientsPanel(props: any): JSX.Element {
       ? state.ingredient.includedIngredients
       : state.ingredient.excludedIngredients,
   );
+ 
+  const [addIngredientPressedCounter, setAddIngredientPressedCounter] =
+    useState<number>(0);
   return (
     <View>
       {/* <Searchbar
@@ -106,9 +112,8 @@ function IngredientsPanel(props: any): JSX.Element {
 
       <HorizontalAlignView
         style={{
-          justifyContent: 'space-between'
-        }}
-        >
+          justifyContent: 'space-between',
+        }}>
         <SmallSizeText>
           {type == 0 ? 'My Ingredients' : 'Must exclude'}
         </SmallSizeText>
@@ -117,6 +122,13 @@ function IngredientsPanel(props: any): JSX.Element {
             icon={'plus'}
             onPress={() => {
               // console.log("hihi");
+              setAddIngredientPressedCounter(addIngredientPressedCounter + 1);
+              ComponentUsedCounter(
+                addIngredientPressedCounter + 1,
+                type == 0
+                  ? 'addIncludedIngredientPlusButton'
+                  : 'addExcludedIngredientPlusButton',
+              );
               SheetManager.show('AddIngredientModal', {
                 payload: {
                   type: type,
@@ -125,6 +137,10 @@ function IngredientsPanel(props: any): JSX.Element {
                     type == 0
                       ? 'Search for ingredients you want recipes to include.'
                       : 'Search for ingredients you want recipes to exclude.',
+                  relatedRecommendedSearchResultPressedCounter:
+                    props.relatedRecommendedSearchResultPressedCounter,
+                  setRelatedRecommendedSearchResultPressedCounter:
+                    props.setRelatedRecommendedSearchResultPressedCounter,
                 },
               });
             }}

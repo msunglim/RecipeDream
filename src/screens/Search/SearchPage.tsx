@@ -34,6 +34,8 @@ import IngredientsPanel from './IngredientsPanel';
 import '../../../sheets';
 import {SheetProvider} from 'react-native-actions-sheet';
 import {CommonButton} from '../../common/CommonButton';
+import {PageRemainTimer} from '../../common/PageRemainTimer';
+import {ComponentUsedCounter} from '../../common/ComponentUsedCounter';
 /*
 검색 첫페이지
 props contians ..
@@ -81,13 +83,27 @@ function SearchPage(props: any): JSX.Element {
   }
 
   const [isSearchBarFocused, setIsSearchBarFocused] = useState<boolean>(false);
+  const [visitedTime, setVisitedTime] = useState<Date>(new Date());
+  // console.log("first visited:",visitedTime);
   function goSerach() {
+    // const leaveTime = new Date()
+    setGoSearchButtonCounter(goSearchButtonCounter+1)
+    ComponentUsedCounter(goSearchButtonCounter+1, 'goSearchButton')
+    PageRemainTimer(visitedTime, 'searchPage');
     navigation.navigate('SearchResultPage', {
       searchKeyword: searchKeyword,
       excluded: excluded,
       included: included,
     });
   }
+
+  const [serachBarPressedCounter, setSearchBarPressedCounter] =
+    useState<number>(0);
+  const [
+    relatedRecommendedSearchResultPressedCounter,
+    setRelatedRecommendedSearchResultPressedCounter,
+  ] = useState<number>(0);
+  const [goSearchButtonCounter, setGoSearchButtonCounter] =useState<number>(0)
   return (
     <SheetProvider>
       <TouchableWithoutFeedback
@@ -106,6 +122,11 @@ function SearchPage(props: any): JSX.Element {
             onChangeText={onChangeSearch}
             value={searchKeyword.toString()}
             onFocus={() => {
+              setSearchBarPressedCounter(serachBarPressedCounter + 1);
+              ComponentUsedCounter(
+                serachBarPressedCounter + 1,
+                'dishNameSearchBarButton',
+              );
               setIsSearchBarFocused(true);
             }}
             onBlur={() => {
@@ -120,12 +141,34 @@ function SearchPage(props: any): JSX.Element {
             <SearchBarResults
               searchResults={searchResults}
               onPressEvent={onSearchBarResultPressEvent}
+              relatedRecommendedSearchResultPressedCounter={
+                relatedRecommendedSearchResultPressedCounter
+              }
+              setRelatedRecommendedSearchResultPressedCounter={
+                setRelatedRecommendedSearchResultPressedCounter
+              }
             />
           )}
           {/* included */}
-          <IngredientsPanel type={0} />
+          <IngredientsPanel
+            type={0}
+            relatedRecommendedSearchResultPressedCounter={
+              relatedRecommendedSearchResultPressedCounter
+            }
+            setRelatedRecommendedSearchResultPressedCounter={
+              setRelatedRecommendedSearchResultPressedCounter
+            }
+          />
           {/* excluded */}
-          <IngredientsPanel type={1} />
+          <IngredientsPanel
+            type={1}
+            relatedRecommendedSearchResultPressedCounter={
+              relatedRecommendedSearchResultPressedCounter
+            }
+            setRelatedRecommendedSearchResultPressedCounter={
+              setRelatedRecommendedSearchResultPressedCounter
+            }
+          />
           <CenterView
             style={{
               margin: '10%',

@@ -21,6 +21,7 @@ import axios from 'axios';
 import HTML from 'react-native-render-html';
 import { Dimensions } from 'react-native';
 import { RECIPE_API_KEY } from '@env';
+import { PageRemainTimer } from '../../common/PageRemainTimer';
 const screenWidth = Dimensions.get('window').width;
 const Container = styled(ScrollView)`
   padding: 16px;
@@ -68,7 +69,9 @@ interface IngredientProps {
 }
 function RecipeDetail(props: any): JSX.Element {
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+    const [visitedTime,setVisitedTime] =useState<Date>(new Date())
     function goBack() {
+        PageRemainTimer(visitedTime, 'recipeDetailPage')
         navigation.goBack();
     }
     const name: string = 'Cheesecake';
