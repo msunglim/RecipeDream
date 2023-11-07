@@ -13,10 +13,13 @@ export const commonImage =
 export const themeColorDarkGrey = '#121212';
 export const themeColorGrey = '#282828';
 export const themeColorLightGrey = '#3C3C3C';
+
 export const themeColorSuperLightGrey = '#666666';
 export const themeColorBlue = '#1E1E1E';
 export const themeColorLightGreen = '#4c3fff';
-export const themeColorRealBlue = '#4c3fff';
+export const themeColorRealBlack = '#000000';
+export const themeColorGreen = '#00FF00';
+export const themeColorOrange = '#FFA500'
 export const themeColorSuperLightGreen = '#9EFFA9';
 export const themeColorRed = '#ff2f00';
 export const WIDTH = Dimensions.get('window').width;
@@ -31,12 +34,14 @@ export const FoodImage = styled(Image)`
 export const UsedIngredientItem = styled(Text)`
   margin-bottom: 8px;
   padding: 5px;
-  color: ${themeColorRealBlue};
+  color: ${themeColorRealBlack};
+  text-align-vertical:center;
 `;
 export const MissingIngredientItem = styled(Text)`
   margin-bottom: 8px;
   padding: 5px;
-  color: ${themeColorRed};
+  color: ${themeColorSuperLightGrey};
+  text-align-vertical:center;
 `;
 export const InstructionItem = styled(Text)`
   margin-bottom: 8px;

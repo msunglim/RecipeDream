@@ -1,32 +1,46 @@
-import { HorizontalAlignView, LargeSizeText } from '../../styles';
-import { Image, Text, View, TouchableOpacity } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation, ParamListBase } from '@react-navigation/native';
-import { useState } from 'react';
-import { PageRemainTimer } from '../../common/PageRemainTimer';
+import {
+  ExcluseMeHorizontally,
+  HorizontalAlignView,
+  LargeSizeText,
+  SmallSizeText,
+} from '../../styles';
+import {Image, Text, View, TouchableOpacity} from 'react-native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {useNavigation, ParamListBase} from '@react-navigation/native';
+import {useState} from 'react';
+import {PageRemainTimer} from '../../common/PageRemainTimer';
 
 /**
- * 
- * @param props 
+ *
+ * @param props
  * visitedTime: Date
- * @returns 
+ * @returns
  */
 export function RecipePanel(props: any) {
   let image = props.image;
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   // const [visitedTime,setVisitedTime] =useState<Date>(new Date())
-  
-  function showRecipeDetail() {
-    
-    PageRemainTimer(props.visitedTime, 'searchResultPage')
 
-    navigation.navigate('RecipeDetail', { recipeId: props.recipeId, excluded: props.excluded, included: props.included });
-    console.log(props.recipeId)
+  function showRecipeDetail() {
+    PageRemainTimer(props.visitedTime, 'searchResultPage');
+
+    navigation.navigate('RecipeDetail', {
+      recipeId: props.recipeId,
+      excluded: props.excluded,
+      included: props.included,
+    });
+    console.log(props.recipeId);
   }
 
   // function
   return (
-    <TouchableOpacity onPress={showRecipeDetail}>
+    <TouchableOpacity
+      onPress={showRecipeDetail}
+      style={{
+        margin: 3,
+        // borderColor: 'grey',
+        // borderWidth: 1,
+      }}>
       <HorizontalAlignView>
         <Image
           style={{
@@ -36,12 +50,15 @@ export function RecipePanel(props: any) {
             //   borderColor: 'red',
             borderRadius: 15,
           }}
-          source={{ uri: image }}
+          source={{uri: image}}
         />
         <View>
-          <LargeSizeText>{props.name}</LargeSizeText>
-          {/* <LargeSizeText>{props.name}</LargeSizeText> */}
+          <LargeSizeText numberOfLines={2} style={{flexWrap: 'wrap'}}>
+            {props.name}
+          </LargeSizeText>
+          <SmallSizeText> 3 Missiing</SmallSizeText>
         </View>
+        {/* <LargeSizeText>{props.name}</LargeSizeText> */}
       </HorizontalAlignView>
     </TouchableOpacity>
   );
