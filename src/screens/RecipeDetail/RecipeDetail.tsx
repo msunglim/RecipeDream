@@ -198,7 +198,7 @@ function RecipeDetail(props: any): JSX.Element {
           <FoodImage
             source={recipeImageUrl ? {uri: recipeImageUrl} : {uri: commonImage}}
           />
-          <UltraSizeText>Ingredients</UltraSizeText>
+          <SectionTitle>Ingredients</SectionTitle>
           <Divider />
           <Section>
             {recipe.used_ingredients.map((ingredient, index) => (
