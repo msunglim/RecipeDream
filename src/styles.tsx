@@ -33,6 +33,11 @@ export const LargeSizeText = styled(Text)`
   text-align-vertical:center;
   color:black;
 `;
+export const UltraSizeText = styled(Text)`
+  font-size:30px;
+  text-align-vertical:center;
+  color:black;
+`;
 export const HorizontalAlignText = styled(Text)`
   text-align:center;
   color:black;

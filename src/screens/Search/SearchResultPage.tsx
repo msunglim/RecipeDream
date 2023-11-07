@@ -28,9 +28,8 @@ import {IngredientChip} from '../../common/IngredientChip';
 import {filterAndSortDatas} from './filterData';
 import {RecipePanel} from './RecipePanel';
 import axios from 'axios';
-import {RECIPE_API_KEY} from '@env';
 import { PageRemainTimer } from '../../common/PageRemainTimer';
-
+import { RECIPE_API_KEY } from '@env';
 /*
 props contians ..
 searchKeyword: string
@@ -98,6 +97,8 @@ function SearchResultPage(props: any): JSX.Element {
         const response = await axios.get(
           `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=${numberOfRecipesShown}&apiKey=${API_KEY}`,
         );
+        console.log(response.data);
+        
         // console.log("Before setting results:", results);
         // console.log(response.data);
         setResults(response.data);
