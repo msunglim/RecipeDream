@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -5,7 +7,7 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 
-const connect_string = 'mongodb+srv://harriet3398:Micom9595@recipedream.ktkgfyu.mongodb.net/?retryWrites=true&w=majority';
+const connect_string = process.env.MONGODB_URI;
 
 // MongoDB Atlas 연결 설정
 mongoose.connect(connect_string, {
