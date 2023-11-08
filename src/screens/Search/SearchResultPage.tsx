@@ -93,21 +93,25 @@ function SearchResultPage(props: any): JSX.Element {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const ingredients = included.join(',+'); // 사용자가 입력한 재료를 쉼표로 구분하여 연결
-        const response = await axios.get(
-          `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=${numberOfRecipesShown}&apiKey=${API_KEY}`,
-        );
+        const includedIngredients = included.join(','); // 포함할 재료를 쉼표로 구분하여 연결
+        const excludedIngredients = excluded.join(','); // 제외할 재료를 쉼표로 구분하여 연결
+        const url = `https://api.spoonacular.com/recipes/complexSearch`;
+        const params = {
+          apiKey: RECIPE_API_KEY,
+          number: numberOfRecipesShown,
+          includeIngredients: includedIngredients,
+          excludeIngredients: excludedIngredients,
+          sort: 'min-missing-ingredients', // 가장 적은 수의 누락된 재료를 가진 레시피가 먼저 나오도록 정렬
+          sortDirection: 'asc', // 오름차순 정렬
+        };
+        const response = await axios.get(url, { params });
+        console.log("검색결과리스트");
         console.log(response.data);
-        
-        // console.log("Before setting results:", results);
-        // console.log(response.data);
-        setResults(response.data);
-        // console.log("After setting results:", results);
+        setResults(response.data.results);
       } catch (error) {
         console.error('API call error:', error);
       }
     };
-
     fetchRecipes();
   }, [searchKeyword, included, excluded]);
   return (
