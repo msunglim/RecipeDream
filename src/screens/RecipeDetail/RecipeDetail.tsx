@@ -35,6 +35,7 @@ import {Dimensions} from 'react-native';
 import {RECIPE_API_KEY} from '@env';
 import {PageRemainTimer} from '../../common/PageRemainTimer';
 import {Divider, IconButton} from 'react-native-paper';
+import pluralize from 'pluralize';
 const screenWidth = Dimensions.get('window').width;
 const Container = styled(ScrollView)`
   padding: 16px;

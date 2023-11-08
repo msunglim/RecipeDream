@@ -195,6 +195,7 @@ function SearchResultPage(props: any): JSX.Element {
           <RecipePanel
             image={item.item.image}
             name={item.item.title}
+            missedIngredientCount={item.item.missedIngredientCount}
             included={included}
             excluded={excluded}
             recipeId={item.item.id}

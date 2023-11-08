@@ -56,7 +56,7 @@ export function RecipePanel(props: any) {
           <LargeSizeText numberOfLines={2} style={{flexWrap: 'wrap'}}>
             {props.name}
           </LargeSizeText>
-          <SmallSizeText> 3 Missiing</SmallSizeText>
+          <SmallSizeText>{props.missedIngredientCount} Missing</SmallSizeText>
         </View>
         {/* <LargeSizeText>{props.name}</LargeSizeText> */}
       </HorizontalAlignView>
