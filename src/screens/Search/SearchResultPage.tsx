@@ -98,6 +98,7 @@ function SearchResultPage(props: any): JSX.Element {
         const url = `https://api.spoonacular.com/recipes/complexSearch`;
         const params = {
           apiKey: RECIPE_API_KEY,
+          query: searchKeyword,
           number: numberOfRecipesShown,
           includeIngredients: includedIngredients,
           excludeIngredients: excludedIngredients,
