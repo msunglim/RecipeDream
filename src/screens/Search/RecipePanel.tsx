@@ -17,6 +17,7 @@ import {PageRemainTimer} from '../../common/PageRemainTimer';
  * @returns
  */
 export function RecipePanel(props: any) {
+  let totalIngredientsCount = props.totalIngredientsCount;
   let image = props.image;
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   // const [visitedTime,setVisitedTime] =useState<Date>(new Date())
@@ -31,7 +32,7 @@ export function RecipePanel(props: any) {
     });
     console.log(props.recipeId);
   }
-
+ 
   // function
   return (
     <TouchableOpacity
@@ -56,7 +57,7 @@ export function RecipePanel(props: any) {
           <LargeSizeText numberOfLines={2} style={{flexWrap: 'wrap'}}>
             {props.name}
           </LargeSizeText>
-          <SmallSizeText>{props.missedIngredientCount} Missing</SmallSizeText>
+          <SmallSizeText>{props.included.length === 0 ? totalIngredientsCount : props.missedIngredientCount} Missing</SmallSizeText>
         </View>
         {/* <LargeSizeText>{props.name}</LargeSizeText> */}
       </HorizontalAlignView>

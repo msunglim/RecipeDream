@@ -108,7 +108,20 @@ function SearchResultPage(props: any): JSX.Element {
         const response = await axios.get(url, { params });
         console.log("검색결과리스트");
         console.log(response.data);
-        setResults(response.data.results);
+
+        const recipesWithTotalIngredients = await Promise.all(
+          response.data.results.map(async (recipe: any) => {
+            const recipeInfoUrl = `https://api.spoonacular.com/recipes/${recipe.id}/information?includeNutrition=false`;
+            const recipeInfoResponse = await axios.get(recipeInfoUrl, {
+              params: { apiKey: API_KEY }
+            });
+            const totalIngredients = recipeInfoResponse.data.extendedIngredients.length;
+            return { ...recipe, totalIngredientsCount: totalIngredients };
+          })
+        );
+
+        setResults(recipesWithTotalIngredients);
+        
       } catch (error) {
         console.error('API call error:', error);
       }
@@ -196,6 +209,7 @@ function SearchResultPage(props: any): JSX.Element {
           <RecipePanel
             image={item.item.image}
             name={item.item.title}
+            totalIngredientsCount={item.item.totalIngredientsCount}
             missedIngredientCount={item.item.missedIngredientCount}
             included={included}
             excluded={excluded}
