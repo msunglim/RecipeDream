@@ -132,36 +132,28 @@ function RecipeDetail(props: any): JSX.Element {
             },
           );
           console.log(ingredients);
-          setRecipe({
-            missed_ingredients: [],
-            used_ingredients: [],
-            instructions: [],
-          });
-          ingredients.forEach((i: any) => {
-            if (user_set_included.includes(i.name)) {
-              console.log('yes', i);
-              //중복된거 안넣음
-              // if (recipe.used_ingredients.indexOf(i) == -1) {
+          const usedIngredientNames = new Set();
+          const missedIngredientNames = new Set();
+          ingredients.forEach((ingredient: any) => {
+            const ingredientName = ingredient.name.toLowerCase();
+            const isIngredientIncluded = user_set_included.some((userIngredient: string) => {
+              const userIngredientSingular = pluralize.singular(userIngredient.toLowerCase());
+              const userIngredientPlural = pluralize.plural(userIngredient.toLowerCase());
+              return ingredientName === userIngredientSingular || ingredientName === userIngredientPlural;
+            });
 
-              recipe.used_ingredients.push(i); // 사용한 재료 목록에 추가
-              // }
-            } else {
-              console.log('no', i);
-              //중복된거 안넣음
-              // if (recipe.missed_ingredients.indexOf(i) == -1) {
-              recipe.missed_ingredients.push(i); // 놓친 재료 목록에 추가
-              // }
+            if (isIngredientIncluded && !usedIngredientNames.has(ingredientName)) {
+              recipe.used_ingredients.push(ingredient);
+              usedIngredientNames.add(ingredientName);
+            } else if (!missedIngredientNames.has(ingredientName)) {
+              recipe.missed_ingredients.push(ingredient);
+              missedIngredientNames.add(ingredientName);
             }
           });
-          //.으로 분할된 레시피
-          let smart_instruction = response.data.instructions.split('.');
-
-          // smart_instruction[0] = smart_instruction[0].replace("Instructions", "")
-          // recipe.instructions = smart_instruction
           setRecipe({
             missed_ingredients: recipe.missed_ingredients,
             used_ingredients: recipe.used_ingredients,
-            instructions: smart_instruction || [],
+            instructions: response.data.instructions.split('.') || [],
           });
           setLoading(false);
         } catch (err: any) {
@@ -176,6 +168,7 @@ function RecipeDetail(props: any): JSX.Element {
   if (loading) {
     return <Text>Loading...</Text>;
   }
+  if (error) return <p>Error: {error}</p>;
   function moveForward() {}
   useLayoutEffect(() => {
     navigation.setOptions(
