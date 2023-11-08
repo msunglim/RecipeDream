@@ -13,4 +13,25 @@ export function PageRemainTimer(visitedTime: Date, pageName: string) {
   );
   //pageName과 함께 서버에 시간차 값 전송.
   //timeDifferenceInMillis 이걸 보내도 좋고, 따로 알아보기쉽게 hours:miniutes:seconds로 보내도 좋고.
+
+  const formattedTime = `${hours}:${minutes}:${seconds}`;
+  const payload = {
+    pageName: pageName,
+    timeSpent: formattedTime,
+  };
+
+  fetch('http://localhost:3000/api/page-remain-time', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Success:', data);
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
 }
