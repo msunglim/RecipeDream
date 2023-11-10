@@ -255,10 +255,15 @@ function RecipeDetail(props: any): JSX.Element {
 
                       {/* html 어쩌구면 html로아니면 string 그대로 . 번호는 알빠노 */}
                       {instruction.charAt(0) == '<' && (
+                        <HorizontalAlignView>
+                          <LargeSizeText>
+                            {index + ': '}
+                            </LargeSizeText>
                         <HTML
                           source={{html: instruction}}
                           contentWidth={screenWidth}
                         />
+                        </HorizontalAlignView>
                       )}
                       {instruction.charAt(0) != '<' && (
                         <LargeSizeText>
