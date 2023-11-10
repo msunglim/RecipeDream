@@ -15,6 +15,7 @@ import { ComponentUsedCounter } from '../../common/ComponentUsedCounter';
 /**
  * 검색창에 뜨는 추천검색어들
  * @param props 
+ * searchKeyword: ingredient name
  * searchResults: string[]
  * onPressEvent: ()=>{}
  * relatedRecommendedSearchResultPressedCounter:number
@@ -31,6 +32,7 @@ export function SearchBarResults(props: any) {
   // function onChangeSearch(query: string) {
   //   dispatch(typing({text: query})); //키워드에 따른 text, results 스테이트 업데이트.
   // }
+  // console.log("length:", props.searchKeyword.length, " len",props.searchKeyword.length >0? 200:0);
   
   return (
     <FlatList
@@ -41,10 +43,12 @@ export function SearchBarResults(props: any) {
         // maxHeight: 200,
         // borderWidth: 5,
         // borderColor: 'blue',
+        
         flexGrow: 0,
-        maxHeight:200
+        height:props.searchKeyword.length >0? 200:0,
         // flex:0,
-        // position:'absolute'
+        // position:'absolute',
+        width:'100%'
       }}
       data={searchResults}
       keyExtractor={(item, index) => item}
@@ -55,6 +59,8 @@ export function SearchBarResults(props: any) {
             borderWidth: 1,
             height: 50,
             justifyContent: 'center',
+            backgroundColor:'white',
+            width:'100%'
           }}
           onPress={() => {
             props.onPressEvent(item)
@@ -65,6 +71,7 @@ export function SearchBarResults(props: any) {
           }}
           activeOpacity={1}>
           <MiddleSizeText>{item}</MiddleSizeText>
+          
         </TouchableOpacity>
       )}
     />

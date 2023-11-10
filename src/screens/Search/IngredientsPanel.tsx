@@ -19,7 +19,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import {MasterHeaderOption} from '../../common/MasterHeaderOption';
-import {Chip, IconButton, Searchbar} from 'react-native-paper';
+import {Chip, Divider, IconButton, Searchbar} from 'react-native-paper';
 import {RootState, store} from '../../common/store';
 import {Provider, useDispatch, useSelector} from 'react-redux';
 import {SearchBarResults} from './SearchBarResults';
@@ -36,6 +36,7 @@ import {SheetManager, SheetProvider} from 'react-native-actions-sheet';
 import '../../../sheets';
 import {SelectedIngredients} from './SelectedIngredients';
 import {ComponentUsedCounter} from '../../common/ComponentUsedCounter';
+import {IngredientSearchPanel} from './IngredientSearchPanel';
 /*
 include 든지 exclude든지 +와 함께 보이는것.
 props contians ..
@@ -44,7 +45,7 @@ relatedRecommendedSearchResultPressedCounter:number
 setRelatedRecommendedSearchResultPressedCounter:setState
 */
 function IngredientsPanel(props: any): JSX.Element {
-  const type = props.type;
+  // const type = props.type;
   // const searchKeyword = useSelector(
   //   (state: RootState) => state.ingredient.text,
   // );
@@ -79,94 +80,34 @@ function IngredientsPanel(props: any): JSX.Element {
   //     dispatch(removeExcluded({ingredient: item})); //키워드에 따른 text, results 스테이트 업데이트.
   //   }
   // }
-  const original: string[] = useSelector((state: RootState) =>
-    type == 0
-      ? state.ingredient.includedIngredients
-      : state.ingredient.excludedIngredients,
-  );
- 
+  // const original: string[] = useSelector((state: RootState) =>
+  //   type == 0
+  //     ? state.ingredient.includedIngredients
+  //     : state.ingredient.excludedIngredients,
+  // );
+
   const [addIngredientPressedCounter, setAddIngredientPressedCounter] =
     useState<number>(0);
+  const dispatch = useDispatch();
+  function onChangeSearch(query: string) {
+    dispatch(typing({text: query})); //키워드에 따른 text, results 스테이트 업데이트.
+  }
+  const [isSearchBarFocused, setIsSearchBarFocused] = useState<boolean>(false);
+
+  const [searchIngredientBarCounter, setSearchIngredientBarCounter] =
+    useState<number>(0);
+  const [cancelButtonCounter, setCancelButtonCounter] = useState<number>(0);
+  const [saveButtonCounter, setSaveButtonCounter] = useState<number>(0);
   return (
     <View>
-      {/* <Searchbar
-        placeholder="Search"
-        onChangeText={onChangeSearch}
-        value={searchKeyword.toString()}
-        onFocus={() => {
-          setIsSearchBarFocused(true);
-        }}
-        onBlur={() => {
-          setIsSearchBarFocused(false);
-        }}
-        onSubmitEditing={() => {
-          // console.log("검색할것", searchKeyword)
-        }}
-      />
-      {isSearchBarFocused && (
-        <SearchBarResults
-          searchResults={searchResults}
-          onPressEvent={onSearchBarResultPressEvent}
-        />
-      )} */}
-
-      <HorizontalAlignView
-        style={{
-          justifyContent: 'space-between',
-        }}>
-        <SmallSizeText>
-          {type == 0 ? 'My Ingredients' : 'Must exclude'}
-        </SmallSizeText>
-        <View>
-          <IconButton
-            icon={'plus'}
-            onPress={() => {
-              // console.log("hihi");
-              setAddIngredientPressedCounter(addIngredientPressedCounter + 1);
-              ComponentUsedCounter(
-                addIngredientPressedCounter + 1,
-                type == 0
-                  ? 'addIncludedIngredientPlusButton'
-                  : 'addExcludedIngredientPlusButton',
-              );
-              SheetManager.show('AddIngredientModal', {
-                payload: {
-                  type: type,
-                  original: original,
-                  helperText:
-                    type == 0
-                      ? 'Search for ingredients you want recipes to include.'
-                      : 'Search for ingredients you want recipes to exclude.',
-                  relatedRecommendedSearchResultPressedCounter:
-                    props.relatedRecommendedSearchResultPressedCounter,
-                  setRelatedRecommendedSearchResultPressedCounter:
-                    props.setRelatedRecommendedSearchResultPressedCounter,
-                },
-              });
-            }}
-          />
-        </View>
-      </HorizontalAlignView>
-      <SelectedIngredients
-        // addedIngredients={addedIngredients}
-        // removeIngredient={removeIngredient}
-        type={type}
-      />
-      {/* <RedBorderView
-        style={{
-          flexWrap: 'wrap',
-        }}>
-        {addedIngredients.map((item, index) => (
-          <Chip
-            key={index}
-            onPress={() => console.log('Pressed')}
-            onClose={() => {
-              removeIngredient(item);
-            }}>
-            {item}
-          </Chip>
-        ))}
-      </RedBorderView> */}
+      <IngredientSearchPanel />
+      
+      <SmallSizeText>Included ingredients</SmallSizeText>
+      <Divider />
+      <SelectedIngredients type={0} />
+      <SmallSizeText>Excluded ingredients</SmallSizeText>
+      <Divider />
+      <SelectedIngredients type={1} />
     </View>
   );
 }

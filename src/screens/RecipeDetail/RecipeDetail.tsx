@@ -246,19 +246,35 @@ function RecipeDetail(props: any): JSX.Element {
           <SectionTitle>Instructions</SectionTitle>
           <Divider />
           {/* <HTML source={{ html: recipe.instructions }} contentWidth={screenWidth} /> */}
-          {recipe.instructions.map((instruction, index) => instruction.length > 0 && (
-            <View key={'instruction' + index}>
-              {instruction.length > 0 && (
+          {recipe.instructions.map(
+            (instruction, index) =>
+              instruction.length > 0 && (
                 <View key={'instruction' + index}>
-                  {/* <HTML source={{ html: instruction }} contentWidth={screenWidth} /> */}
-                  {/* 보니까 html인것도있고 string인것도있음. */}
-                  <LargeSizeText>
-                    {index + ': ' + instruction + '.'}
-                  </LargeSizeText>
+                  {instruction.length > 0 && (
+                    <View key={'instruction' + index}>
+
+                      {/* html 어쩌구면 html로아니면 string 그대로 . 번호는 알빠노 */}
+                      {instruction.charAt(0) == '<' && (
+                        <HorizontalAlignView>
+                          <LargeSizeText>
+                            {index + ': '}
+                            </LargeSizeText>
+                        <HTML
+                          source={{html: instruction}}
+                          contentWidth={screenWidth}
+                        />
+                        </HorizontalAlignView>
+                      )}
+                      {instruction.charAt(0) != '<' && (
+                        <LargeSizeText>
+                          {index + ': ' + instruction + '.'}
+                        </LargeSizeText>
+                      )}
+                    </View>
+                  )}
                 </View>
-              )}
-            </View>
-          ))}
+              ),
+          )}
           <ServingSizeContainer />
         </Container>
       </SafeAreaView>

@@ -19,7 +19,7 @@ import {
   Keyboard,
 } from 'react-native';
 import {MasterHeaderOption} from '../../common/MasterHeaderOption';
-import {Chip, IconButton, Searchbar} from 'react-native-paper';
+import {Chip, Divider, IconButton, Searchbar} from 'react-native-paper';
 import {RootState, store} from './../../common/store';
 import {Provider, useDispatch, useSelector} from 'react-redux';
 import {resetKeyword, typing} from './searchBarSlice';
@@ -27,6 +27,7 @@ import {SearchBarResults} from './SearchBarResults';
 import {
   CenterView,
   HorizontalAlignView,
+  MiddleSizeText,
   RedBorderView,
   SmallSizeText,
 } from '../../styles';
@@ -36,6 +37,7 @@ import {SheetProvider} from 'react-native-actions-sheet';
 import {CommonButton} from '../../common/CommonButton';
 import {PageRemainTimer} from '../../common/PageRemainTimer';
 import {ComponentUsedCounter} from '../../common/ComponentUsedCounter';
+import {ExcuseMeVertically} from '../../common/ExcuseMeVertically';
 /*
 검색 첫페이지
 props contians ..
@@ -87,8 +89,8 @@ function SearchPage(props: any): JSX.Element {
   // console.log("first visited:",visitedTime);
   function goSerach() {
     // const leaveTime = new Date()
-    setGoSearchButtonCounter(goSearchButtonCounter+1)
-    ComponentUsedCounter(goSearchButtonCounter+1, 'goSearchButton')
+    setGoSearchButtonCounter(goSearchButtonCounter + 1);
+    ComponentUsedCounter(goSearchButtonCounter + 1, 'goSearchButton');
     PageRemainTimer(visitedTime, 'searchPage');
     navigation.navigate('SearchResultPage', {
       searchKeyword: searchKeyword,
@@ -103,7 +105,7 @@ function SearchPage(props: any): JSX.Element {
     relatedRecommendedSearchResultPressedCounter,
     setRelatedRecommendedSearchResultPressedCounter,
   ] = useState<number>(0);
-  const [goSearchButtonCounter, setGoSearchButtonCounter] =useState<number>(0)
+  const [goSearchButtonCounter, setGoSearchButtonCounter] = useState<number>(0);
   return (
     <SheetProvider>
       <TouchableWithoutFeedback
@@ -117,6 +119,8 @@ function SearchPage(props: any): JSX.Element {
             // borderColor: 'red',
             // borderWidth: 10,
           }}>
+          <MiddleSizeText>Search by name of plate</MiddleSizeText>
+          <ExcuseMeVertically />
           <Searchbar
             placeholder="Search for recipes"
             onChangeText={onChangeSearch}
@@ -138,29 +142,37 @@ function SearchPage(props: any): JSX.Element {
             autoCapitalize="none"
           />
           {isSearchBarFocused && (
-            <SearchBarResults
-              searchResults={searchResults}
-              onPressEvent={onSearchBarResultPressEvent}
-              relatedRecommendedSearchResultPressedCounter={
-                relatedRecommendedSearchResultPressedCounter
-              }
-              setRelatedRecommendedSearchResultPressedCounter={
-                setRelatedRecommendedSearchResultPressedCounter
-              }
-            />
+            <View
+              style={{
+                zIndex: 1,
+              }}>
+              <SearchBarResults
+                searchKeyword={searchKeyword}
+                searchResults={searchResults}
+                onPressEvent={onSearchBarResultPressEvent}
+                relatedRecommendedSearchResultPressedCounter={
+                  relatedRecommendedSearchResultPressedCounter
+                }
+                setRelatedRecommendedSearchResultPressedCounter={
+                  setRelatedRecommendedSearchResultPressedCounter
+                }
+              />
+            </View>
           )}
           {/* included */}
+          <MiddleSizeText>Search by name of ingredients</MiddleSizeText>
+          <ExcuseMeVertically />
           <IngredientsPanel
-            type={0}
-            relatedRecommendedSearchResultPressedCounter={
-              relatedRecommendedSearchResultPressedCounter
-            }
-            setRelatedRecommendedSearchResultPressedCounter={
-              setRelatedRecommendedSearchResultPressedCounter
-            }
+          // type={0}
+          // relatedRecommendedSearchResultPressedCounter={
+          //   relatedRecommendedSearchResultPressedCounter
+          // }
+          // setRelatedRecommendedSearchResultPressedCounter={
+          //   setRelatedRecommendedSearchResultPressedCounter
+          // }
           />
           {/* excluded */}
-          <IngredientsPanel
+          {/* <IngredientsPanel
             type={1}
             relatedRecommendedSearchResultPressedCounter={
               relatedRecommendedSearchResultPressedCounter
@@ -168,7 +180,7 @@ function SearchPage(props: any): JSX.Element {
             setRelatedRecommendedSearchResultPressedCounter={
               setRelatedRecommendedSearchResultPressedCounter
             }
-          />
+          /> */}
           <CenterView
             style={{
               margin: '10%',

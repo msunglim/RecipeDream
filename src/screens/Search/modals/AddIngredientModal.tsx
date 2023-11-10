@@ -30,7 +30,8 @@ import {
   SmallSizeText,
 } from '../../../styles';
 import {CommonButton} from '../../../common/CommonButton';
-import { ComponentUsedCounter } from '../../../common/ComponentUsedCounter';
+import {ComponentUsedCounter} from '../../../common/ComponentUsedCounter';
+import { SearchBarResultsIngredient } from '../SearchBarResultsIngredient';
 
 /**
  *
@@ -60,14 +61,17 @@ function AddIngredientModal(props: SheetProps) {
   const original = props.payload.original;
   function cancel() {
     // console.log("orignal", original);
-    setCancelButtonCounter(cancelButtonCounter+1)
-    ComponentUsedCounter(cancelButtonCounter+1, 'AddIngredientModalCancelButton')
+    setCancelButtonCounter(cancelButtonCounter + 1);
+    ComponentUsedCounter(
+      cancelButtonCounter + 1,
+      'AddIngredientModalCancelButton',
+    );
     dispatch(cancelAdding({type: type, original: original})); //원래 있던걸로 리턴..
     actionSheetRef.current?.hide();
   }
   function done() {
-    setCancelButtonCounter(saveButtonCounter+1)
-    ComponentUsedCounter(saveButtonCounter+1, 'AddIngredientModalSaveButton')
+    setCancelButtonCounter(saveButtonCounter + 1);
+    ComponentUsedCounter(saveButtonCounter + 1, 'AddIngredientModalSaveButton');
     actionSheetRef.current?.hide();
   }
   const dispatch = useDispatch();
@@ -87,9 +91,9 @@ function AddIngredientModal(props: SheetProps) {
     dispatch(resetKeyword({}));
   }
   const [searchIngredientBarCounter, setSearchIngredientBarCounter] =
-  useState<number>(0);
-  const [cancelButtonCounter, setCancelButtonCounter] = useState<number>(0)
-  const [saveButtonCounter, setSaveButtonCounter] = useState<number>(0)
+    useState<number>(0);
+  const [cancelButtonCounter, setCancelButtonCounter] = useState<number>(0);
+  const [saveButtonCounter, setSaveButtonCounter] = useState<number>(0);
   return (
     <ActionSheet ref={actionSheetRef}>
       {/* <SearchIngredients
@@ -107,16 +111,19 @@ function AddIngredientModal(props: SheetProps) {
           }}>
           <MiddleSizeText>{props.payload.helperText}</MiddleSizeText>
           <Searchbar
-          style={{
-            marginTop: '5%',
-          }}
+            style={{
+              marginTop: '5%',
+            }}
             keyboardType="default"
             placeholder="Search for ingredients"
             onChangeText={onChangeSearch}
             value={searchKeyword.toString()}
             onFocus={() => {
-              setSearchIngredientBarCounter(searchIngredientBarCounter+1)
-              ComponentUsedCounter(searchIngredientBarCounter+1, 'searchIngredientBar')
+              setSearchIngredientBarCounter(searchIngredientBarCounter + 1);
+              ComponentUsedCounter(
+                searchIngredientBarCounter + 1,
+                'searchIngredientBar',
+              );
               setIsSearchBarFocused(true);
             }}
             onBlur={() => {
@@ -129,12 +136,22 @@ function AddIngredientModal(props: SheetProps) {
           />
 
           {isSearchBarFocused && (
-            <SearchBarResults
-              searchResults={searchResults}
-              onPressEvent={onSearchBarResultPressEvent}
-              relatedRecommendedSearchResultPressedCounter={props.payload.relatedRecommendedSearchResultPressedCounter}
-              setRelatedRecommendedSearchResultPressedCounter={props.payload.setRelatedRecommendedSearchResultPressedCounter}
-            />
+            <View
+              style={{
+                zIndex: 1,
+              }}>
+              <SearchBarResultsIngredient
+                searchKeyword={searchKeyword}
+                searchResults={searchResults}
+                // onPressEvent={onSearchBarResultPressEvent}
+                // relatedRecommendedSearchResultPressedCounter={
+                //   props.payload.relatedRecommendedSearchResultPressedCounter
+                // }
+                // setRelatedRecommendedSearchResultPressedCounter={
+                //   props.payload.setRelatedRecommendedSearchResultPressedCounter
+                // }
+              />
+            </View>
           )}
           <SelectedIngredients
             // addedIngredients={addedIngredients}
@@ -142,10 +159,11 @@ function AddIngredientModal(props: SheetProps) {
             type={type}
           />
           <CenterView
-          style={{
-            marginTop:'20%'
-          }}
-          >
+            style={
+              {
+                marginTop:'20%'
+              }
+            }>
             <HorizontalAlignView
               style={{
                 justifyContent: 'center',
