@@ -10,10 +10,11 @@ app.use(bodyParser.json());
 const connect_string = process.env.MONGODB_URI;
 
 // MongoDB Atlas 연결 설정
-mongoose.connect(connect_string, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+// mongoose.connect(connect_string, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
+mongoose.connect(connect_string);
 
 // 데이터 모델 정의 (Mongoose 스키마)
 const pageTimeSchema = new mongoose.Schema({
