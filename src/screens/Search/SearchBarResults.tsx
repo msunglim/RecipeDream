@@ -35,6 +35,10 @@ export function SearchBarResults(props: any) {
   // console.log("length:", props.searchKeyword.length, " len",props.searchKeyword.length >0? 200:0);
   
   return (
+    <View
+    style={{
+      zIndex: 1,
+    }}>
     <FlatList
       keyboardShouldPersistTaps="handled"
       style={{
@@ -45,9 +49,9 @@ export function SearchBarResults(props: any) {
         // borderColor: 'blue',
         
         flexGrow: 0,
-        height:props.searchKeyword.length >0? 200:0,
+        height:props.searchResults.length >0? 200:0,
         // flex:0,
-        // position:'absolute',
+        position:'absolute',
         width:'100%'
       }}
       data={searchResults}
@@ -75,5 +79,7 @@ export function SearchBarResults(props: any) {
         </TouchableOpacity>
       )}
     />
-  );
+    </View>
+  )
+  ;
 }

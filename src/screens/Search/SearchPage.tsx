@@ -11,22 +11,26 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  TextInput,
   Button,
   FlatList,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Keyboard,
+  TextInput,
 } from 'react-native';
 import {MasterHeaderOption} from '../../common/MasterHeaderOption';
-import {Chip, IconButton, Searchbar} from 'react-native-paper';
+import {Chip, Divider, IconButton, List, Searchbar} from 'react-native-paper';
 import {RootState, store} from './../../common/store';
 import {Provider, useDispatch, useSelector} from 'react-redux';
 import {resetKeyword, typing} from './searchBarSlice';
 import {SearchBarResults} from './SearchBarResults';
 import {
   CenterView,
+  ExcluseMeVertically,
+  ExcluseMeVerticallyPX,
   HorizontalAlignView,
+  LargeSizeText,
+  MiddleSizeText,
   RedBorderView,
   SmallSizeText,
 } from '../../styles';
@@ -36,6 +40,7 @@ import {SheetProvider} from 'react-native-actions-sheet';
 import {CommonButton} from '../../common/CommonButton';
 import {PageRemainTimer} from '../../common/PageRemainTimer';
 import {ComponentUsedCounter} from '../../common/ComponentUsedCounter';
+import { IntoleranceListSection } from './IntoleranceListSection';
 /*
 검색 첫페이지
 props contians ..
@@ -87,14 +92,17 @@ function SearchPage(props: any): JSX.Element {
   // console.log("first visited:",visitedTime);
   function goSerach() {
     // const leaveTime = new Date()
-    setGoSearchButtonCounter(goSearchButtonCounter+1)
-    ComponentUsedCounter(goSearchButtonCounter+1, 'goSearchButton')
+    setGoSearchButtonCounter(goSearchButtonCounter + 1);
+    ComponentUsedCounter(goSearchButtonCounter + 1, 'goSearchButton');
     PageRemainTimer(visitedTime, 'searchPage');
     navigation.navigate('SearchResultPage', {
       searchKeyword: searchKeyword,
       excluded: excluded,
       included: included,
+      maxCookingTime: maxCookingTime,
+      intoleranceList:intoleranceList
     });
+    console.log(intoleranceList);
   }
 
   const [serachBarPressedCounter, setSearchBarPressedCounter] =
@@ -103,17 +111,23 @@ function SearchPage(props: any): JSX.Element {
     relatedRecommendedSearchResultPressedCounter,
     setRelatedRecommendedSearchResultPressedCounter,
   ] = useState<number>(0);
-  const [goSearchButtonCounter, setGoSearchButtonCounter] =useState<number>(0)
+  const [goSearchButtonCounter, setGoSearchButtonCounter] = useState<number>(0);
+  //cooking time of recipes in result page will be less or equal to maxCookingTime.
+  const [maxCookingTime, setMaxCookingTime] = useState<number>(
+    Number.POSITIVE_INFINITY,
+  );
+  const [intoleranceList, setIntoleranceList] = useState<string[]>([])
   return (
     <SheetProvider>
       <TouchableWithoutFeedback
         onPress={() => {
           Keyboard.dismiss();
         }}>
-        <View
+        <ScrollView
           style={{
-            height: '100%',
-            padding: '10%',
+            // height: '100%',
+            paddingHorizontal: '10%',
+            paddingTop:'3%'
             // borderColor: 'red',
             // borderWidth: 10,
           }}>
@@ -160,6 +174,7 @@ function SearchPage(props: any): JSX.Element {
             }
           />
           {/* excluded */}
+          <Divider />
           <IngredientsPanel
             type={1}
             relatedRecommendedSearchResultPressedCounter={
@@ -169,13 +184,60 @@ function SearchPage(props: any): JSX.Element {
               setRelatedRecommendedSearchResultPressedCounter
             }
           />
+          <Divider />
+          <ExcluseMeVerticallyPX />
+          <HorizontalAlignView
+            style={{
+              justifyContent: 'space-between',
+            }}>
+              <HorizontalAlignView>
+                <IconButton icon={'clock-time-two-outline'}                
+                />
+            <MiddleSizeText>cooking time less than</MiddleSizeText>
+            </HorizontalAlignView>
+            <TextInput
+              placeholder={'min'}
+              value={
+                maxCookingTime !== Number.POSITIVE_INFINITY 
+                  ? maxCookingTime.toString()
+                  : undefined
+              }
+              keyboardType="numeric"
+              onChangeText={t => {
+                if(t ==''){
+                  setMaxCookingTime(Number.POSITIVE_INFINITY);
+                }else{
+                  setMaxCookingTime(Number(t));
+                }
+                
+                
+              }}
+              style={{
+                borderColor: 'black',
+                borderWidth: 1,
+                borderRadius: 15,
+                textAlign: 'center',
+                textAlignVertical: 'center',
+                minWidth: 50,
+                maxWidth: 100,
+                flexGrow: 0,
+                marginRight:10
+              }}
+            />
+          </HorizontalAlignView>
+          <ExcluseMeVerticallyPX />
+          <Divider />
+         <IntoleranceListSection
+         intoleranceList={intoleranceList}
+         setIntoleranceList={setIntoleranceList}
+         />
           <CenterView
             style={{
               margin: '10%',
             }}>
             <CommonButton text={'Search'} onPressEvent={goSerach} />
           </CenterView>
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </SheetProvider>
   );

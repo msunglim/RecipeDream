@@ -20,6 +20,8 @@ import {MasterHeaderOption} from '../../common/MasterHeaderOption';
 import {
   HorizontalAlignView,
   IncludedChipColor,
+  LargeSizeText,
+  MiddleSizeText,
   SmallSizeText,
 } from '../../styles';
 import {useSelector} from 'react-redux';
@@ -28,13 +30,16 @@ import {IngredientChip} from '../../common/IngredientChip';
 import {filterAndSortDatas} from './filterData';
 import {RecipePanel} from './RecipePanel';
 import axios from 'axios';
-import { PageRemainTimer } from '../../common/PageRemainTimer';
-import { RECIPE_API_KEY } from '@env';
+import {PageRemainTimer} from '../../common/PageRemainTimer';
+import {RECIPE_API_KEY} from '@env';
+import {IconButton, List} from 'react-native-paper';
 /*
 props contians ..
 searchKeyword: string
 included: string[],
-excluded:string[]
+excluded:string[],
+maxCookingTime: number. cooking time of recipes must be less than or equal to this value.
+intoleranceList: string []
 */
 function SearchResultPage(props: any): JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -42,15 +47,15 @@ function SearchResultPage(props: any): JSX.Element {
   const API_KEY = RECIPE_API_KEY;
   const numberOfRecipesShown = 30;
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [visitedTime,setVisitedTime] =useState<Date>(new Date())
+  const [visitedTime, setVisitedTime] = useState<Date>(new Date());
   function goBack() {
-    PageRemainTimer(visitedTime, 'searchResultPage')
+    PageRemainTimer(visitedTime, 'searchResultPage');
 
     navigation.goBack();
   }
-  
+
   function moveForward() {
-    // navigation.navigate() 
+    // navigation.navigate()
   }
   useLayoutEffect(() => {
     navigation.setOptions(
@@ -72,10 +77,20 @@ function SearchResultPage(props: any): JSX.Element {
   const [excluded, setExcluded] = useState<string[]>(
     props.route.params.excluded,
   );
+  const [intoleranceList, setIntoleranceList] = useState<string[]>(
+    props.route.params.intoleranceList,
+  );
+  const [maxCookingTime, setMaxCookingTime] = useState<number>(
+    props.route.params.maxCookingTime,
+  );
   //   console.log("excluded", excluded);
   function removeExcluded(target: string) {
     let copy = [...excluded.filter(item => item != target)];
     setExcluded(copy);
+  }
+  function removeIntolerance(target: string) {
+    let copy = [...intoleranceList.filter(item => item != target)];
+    setIntoleranceList(copy);
   }
   const [included, setIncluded] = useState<string[]>(
     props.route.params.included,
@@ -105,29 +120,31 @@ function SearchResultPage(props: any): JSX.Element {
           sort: 'min-missing-ingredients', // 가장 적은 수의 누락된 재료를 가진 레시피가 먼저 나오도록 정렬
           sortDirection: 'asc', // 오름차순 정렬
         };
-        const response = await axios.get(url, { params });
-        console.log("검색결과리스트");
+        const response = await axios.get(url, {params});
+        // console.log("검색결과리스트");
         console.log(response.data);
 
         const recipesWithTotalIngredients = await Promise.all(
           response.data.results.map(async (recipe: any) => {
             const recipeInfoUrl = `https://api.spoonacular.com/recipes/${recipe.id}/information?includeNutrition=false`;
             const recipeInfoResponse = await axios.get(recipeInfoUrl, {
-              params: { apiKey: API_KEY }
+              params: {apiKey: API_KEY},
             });
-            const totalIngredients = recipeInfoResponse.data.extendedIngredients.length;
-            return { ...recipe, totalIngredientsCount: totalIngredients };
-          })
+            const totalIngredients =
+              recipeInfoResponse.data.extendedIngredients.length;
+            return {...recipe, totalIngredientsCount: totalIngredients};
+          }),
         );
 
         setResults(recipesWithTotalIngredients);
-        
       } catch (error) {
         console.error('API call error:', error);
       }
     };
     fetchRecipes();
   }, [searchKeyword, included, excluded]);
+
+
   return (
     <View
       style={{
@@ -201,6 +218,53 @@ function SearchResultPage(props: any): JSX.Element {
           />
         </HorizontalAlignView>
       )}
+      {maxCookingTime !== Number.POSITIVE_INFINITY && (
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+          }}>
+          <HorizontalAlignView>
+            <SmallSizeText>Max Cooking Time:</SmallSizeText>
+            <IngredientChip
+              onCloseEvent={() => {
+                setMaxCookingTime(Number.POSITIVE_INFINITY);
+              }}
+              item={
+                maxCookingTime.toString() +
+                (maxCookingTime !== 1 ? ' mins' : ' min')
+              }
+              color="white"
+            />
+          </HorizontalAlignView>
+        </View>
+      )}
+      {intoleranceList.length > 0 && (
+        <HorizontalAlignView
+          style={{
+            marginVertical: '5%',
+          }}>
+          <SmallSizeText>Intolerance:</SmallSizeText>
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            data={intoleranceList}
+            keyExtractor={item => item.toString()}
+            renderItem={item => (
+              <IngredientChip
+                //   index={index}
+                onCloseEvent={() => {
+                  removeIntolerance(item.item);
+                }}
+                item={item.item}
+                color="red"
+              />
+            )}
+          />
+        </HorizontalAlignView>
+      )}
+     
       <FlatList
         showsVerticalScrollIndicator={false}
         data={results}
