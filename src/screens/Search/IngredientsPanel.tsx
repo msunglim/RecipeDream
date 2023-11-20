@@ -114,9 +114,13 @@ function IngredientsPanel(props: any): JSX.Element {
         style={{
           justifyContent: 'space-between',
         }}>
+          <HorizontalAlignView>
+            <IconButton icon={type == 0 ? 'food-variant':'food-variant-off'}/>
         <SmallSizeText>
           {type == 0 ? 'My Ingredients' : 'Must exclude'}
         </SmallSizeText>
+        
+        </HorizontalAlignView>
         <View>
           <IconButton
             icon={'plus'}

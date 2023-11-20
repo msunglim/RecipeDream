@@ -19,6 +19,7 @@ import {
 import {
   HorizontalAlignView,
   LargeSizeText,
+  MiddleSizeText,
   UltraSizeText,
   commonImage,
   themeColorLightGreen,
@@ -34,7 +35,7 @@ import HTML from 'react-native-render-html';
 import {Dimensions} from 'react-native';
 import {RECIPE_API_KEY} from '@env';
 import {PageRemainTimer} from '../../common/PageRemainTimer';
-import {Divider, IconButton} from 'react-native-paper';
+import {Divider, IconButton, List} from 'react-native-paper';
 import pluralize from 'pluralize';
 const screenWidth = Dimensions.get('window').width;
 const Container = styled(ScrollView)`
@@ -184,7 +185,9 @@ function RecipeDetail(props: any): JSX.Element {
     );
   }, [navigation, name]);
   console.log('사용된것', recipe);
-
+  const tempIntoleranceList = ['Yoink','Doink','Poink']
+  const tempCookingUtensils = ['Knife','Blade','Sword']
+  const tempCookingTime = 5
   return (
     <SheetProvider>
       <SafeAreaView>
@@ -237,6 +240,57 @@ function RecipeDetail(props: any): JSX.Element {
             <Divider />
           </Section>
           <Divider />
+          {
+        tempIntoleranceList.length > 0 &&
+      
+      <List.Accordion
+        left={props => (
+          <List.Icon {...props} icon="skull-crossbones" color="red" />
+        )}
+        theme={{
+          colors: {
+            primary: 'black',
+            secondary: 'transparent',
+            background: 'transparent',
+          },
+        }}
+        title="intolerances"
+        id="intolerance">
+        {tempIntoleranceList.map((intolerance, index) => (
+          <List.Item
+            left={props => <List.Icon {...props} icon="alert" color="orange" />}
+            title={intolerance}
+            key={index}
+          />
+        ))}
+      </List.Accordion>
+      }
+      <List.Accordion
+        left={props => (
+          <List.Icon {...props} icon="tools" color="silver" />
+        )}
+        theme={{
+          colors: {
+            primary: 'black',
+            secondary: 'transparent',
+            background: 'transparent',
+          },
+        }}
+        title="cooking utensils"
+        id="utensils">
+      {tempCookingUtensils.map((utensil, index) => (
+       <List.Item
+       left={props => <List.Icon {...props} icon="silverware" color="grey" />}
+       title={utensil}
+       key={index}
+     />
+      ))}
+      </List.Accordion>
+      <HorizontalAlignView>
+        <IconButton icon="clock-time-four-outline" iconColor="black" />
+        <MiddleSizeText>{tempCookingTime} mins</MiddleSizeText>
+      </HorizontalAlignView>
+      
           <SectionTitle>Instructions</SectionTitle>
           <Divider />
           {/* <HTML source={{ html: recipe.instructions }} contentWidth={screenWidth} /> */}
