@@ -41,6 +41,7 @@ import {CommonButton} from '../../common/CommonButton';
 import {PageRemainTimer} from '../../common/PageRemainTimer';
 import {ComponentUsedCounter} from '../../common/ComponentUsedCounter';
 import { IntoleranceListSection } from './IntoleranceListSection';
+import { cookingTimeSettingTextinputCounterPressed } from './componentSlice';
 /*
 검색 첫페이지
 props contians ..
@@ -204,6 +205,7 @@ function SearchPage(props: any): JSX.Element {
               }
               keyboardType="numeric"
               onChangeText={t => {
+                dispatch(cookingTimeSettingTextinputCounterPressed())
                 if(t ==''){
                   setMaxCookingTime(Number.POSITIVE_INFINITY);
                 }else{
