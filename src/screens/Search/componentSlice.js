@@ -2,18 +2,20 @@ import { createSlice } from '@reduxjs/toolkit'
 import { ComponentUsedCounter } from '../../common/ComponentUsedCounter'
 
 const initialState=  {
-  ingredientChipCancelCounter:0,
+  filterChipCancelCounter:0,
   includeButtonCounter:0,
-  excludeButtonCounter:0
+  excludeButtonCounter:0,
+  intoleranceCheckboxCounter:0,
+  cookingTimeSettingTextinputCounter:0
 }
 export const componentSlice = createSlice({
   name: 'component',
   initialState,
   reducers: {
-    ingredientChipCancelCounterPressed: (state)=>{
-        let added = state.ingredientChipCancelCounter+1
-        state.ingredientChipCancelCounter =added
-        ComponentUsedCounter(added, 'IngredientChipCancel')
+    filterChipCancelCounterPressed: (state)=>{
+        let added = state.filterChipCancelCounter+1
+        state.filterChipCancelCounter =added
+        ComponentUsedCounter(added, 'filterChipCancel')
     },
     includeButtonCounterPressed: (state)=>{
       let added = state.includeButtonCounter+1
@@ -25,10 +27,20 @@ export const componentSlice = createSlice({
       state.excludeButtonCounter =added
       ComponentUsedCounter(added, 'excludeIngredientButton')
     },
+    intoleranceCheckboxCounterPressed: (state)=>{
+      let added = state.intoleranceCheckboxCounter+1
+      state.intoleranceCheckboxCounter =added
+      ComponentUsedCounter(added, 'IntoleranceCheckbox')
+  },
+  cookingTimeSettingTextinputCounterPressed: (state)=>{
+    let added = state.cookingTimeSettingTextinputCounter+1
+    state.cookingTimeSettingTextinputCounter =added
+    ComponentUsedCounter(added, 'cookingTimeSettingTextinput')
+},
   }
 })
 
 // Action creators are generated for each case reducer function
-export const { ingredientChipCancelCounterPressed, includeButtonCounterPressed,excludeButtonCounterPressed } = componentSlice.actions
+export const { filterChipCancelCounterPressed,includeButtonCounterPressed,excludeButtonCounterPressed, intoleranceCheckboxCounterPressed,cookingTimeSettingTextinputCounterPressed} = componentSlice.actions
 
 export default componentSlice.reducer

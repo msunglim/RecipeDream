@@ -38,6 +38,8 @@ import {CommonButton} from '../../common/CommonButton';
 import {PageRemainTimer} from '../../common/PageRemainTimer';
 import {ComponentUsedCounter} from '../../common/ComponentUsedCounter';
 import {ExcuseMeVertically} from '../../common/ExcuseMeVertically';
+import { cookingTimeSettingTextinputCounterPressed } from './componentSlice';
+import { IntoleranceListSection } from './IntoleranceListSection';
 /*
 검색 첫페이지
 props contians ..
@@ -96,6 +98,8 @@ function SearchPage(props: any): JSX.Element {
       searchKeyword: searchKeyword,
       excluded: excluded,
       included: included,
+      maxCookingTime: maxCookingTime,
+      intoleranceList:intoleranceList
     });
   }
 
@@ -106,6 +110,12 @@ function SearchPage(props: any): JSX.Element {
     setRelatedRecommendedSearchResultPressedCounter,
   ] = useState<number>(0);
   const [goSearchButtonCounter, setGoSearchButtonCounter] = useState<number>(0);
+
+    //cooking time of recipes in result page will be less or equal to maxCookingTime.
+    const [maxCookingTime, setMaxCookingTime] = useState<number>(
+      Number.POSITIVE_INFINITY,
+    );
+    const [intoleranceList, setIntoleranceList] = useState<string[]>([])
   return (
     <SheetProvider>
       <TouchableWithoutFeedback
@@ -181,6 +191,52 @@ function SearchPage(props: any): JSX.Element {
               setRelatedRecommendedSearchResultPressedCounter
             }
           /> */}
+
+<HorizontalAlignView
+            style={{
+              justifyContent: 'space-between',
+            }}>
+              <HorizontalAlignView>
+                <IconButton icon={'clock-time-two-outline'}                
+                />
+            <MiddleSizeText>cooking time less than</MiddleSizeText>
+            </HorizontalAlignView>
+            <TextInput
+              placeholder={'min'}
+              value={
+                maxCookingTime !== Number.POSITIVE_INFINITY 
+                  ? maxCookingTime.toString()
+                  : undefined
+              }
+              keyboardType="numeric"
+              onChangeText={t => {
+                dispatch(cookingTimeSettingTextinputCounterPressed())
+                if(t ==''){
+                  setMaxCookingTime(Number.POSITIVE_INFINITY);
+                }else{
+                  setMaxCookingTime(Number(t));
+                }
+                
+                
+              }}
+              style={{
+                borderColor: 'black',
+                borderWidth: 1,
+                borderRadius: 15,
+                textAlign: 'center',
+                textAlignVertical: 'center',
+                minWidth: 50,
+                maxWidth: 100,
+                flexGrow: 0,
+                marginRight:10
+              }}
+            />
+          </HorizontalAlignView>
+          <Divider />
+         <IntoleranceListSection
+         intoleranceList={intoleranceList}
+         setIntoleranceList={setIntoleranceList}
+         />
           <CenterView
             style={{
               margin: '10%',

@@ -89,6 +89,17 @@ function SearchResultPage(props: any): JSX.Element {
     ingredients: string[];
     image: string;
   }
+  const [intoleranceList, setIntoleranceList] = useState<string[]>(
+    props.route.params.intoleranceList,
+  );
+  const [maxCookingTime, setMaxCookingTime] = useState<number>(
+    props.route.params.maxCookingTime,
+  );
+  
+  function removeIntolerance(target: string) {
+    let copy = [...intoleranceList.filter(item => item != target)];
+    setIntoleranceList(copy);
+  }
   const [results, setResults] = useState<any[]>([]);
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -109,7 +120,8 @@ function SearchResultPage(props: any): JSX.Element {
     };
 
     fetchRecipes();
-  }, [searchKeyword, included, excluded]);
+  }, [searchKeyword, included, excluded,intoleranceList, maxCookingTime]);
+ 
   return (
     <View
       style={{
@@ -183,6 +195,53 @@ function SearchResultPage(props: any): JSX.Element {
           />
         </HorizontalAlignView>
       )}
+      {maxCookingTime !== Number.POSITIVE_INFINITY && (
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+          }}>
+          <HorizontalAlignView>
+            <SmallSizeText>Max Cooking Time:</SmallSizeText>
+            <IngredientChip
+              onCloseEvent={() => {
+                setMaxCookingTime(Number.POSITIVE_INFINITY);
+              }}
+              item={
+                maxCookingTime +
+                (maxCookingTime !== 1 ? ' mins' : ' min')
+              }
+              color="white"
+            />
+          </HorizontalAlignView>
+        </View>
+      )}
+      {intoleranceList.length > 0 && (
+        <HorizontalAlignView
+          style={{
+            marginVertical: '5%',
+          }}>
+          <SmallSizeText>Intolerance:</SmallSizeText>
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            data={intoleranceList}
+            keyExtractor={item => item.toString()}
+            renderItem={item => (
+              <IngredientChip
+                //   index={index}
+                onCloseEvent={() => {
+                  removeIntolerance(item.item);
+                }}
+                item={item.item}
+                color="red"
+              />
+            )}
+          />
+        </HorizontalAlignView>
+      )}
+     
       <FlatList
         showsVerticalScrollIndicator={false}
         data={results}

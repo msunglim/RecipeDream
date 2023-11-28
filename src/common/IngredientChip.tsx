@@ -1,6 +1,6 @@
 import {Chip} from 'react-native-paper';
 import {useDispatch} from 'react-redux';
-import {ingredientChipCancelCounterPressed} from '../screens/Search/componentSlice';
+import {filterChipCancelCounterPressed} from '../screens/Search/componentSlice';
 
 /**
  *
@@ -13,7 +13,7 @@ import {ingredientChipCancelCounterPressed} from '../screens/Search/componentSli
 export function IngredientChip(props: any) {
   const dispatch = useDispatch();
   function cancelIngreident() {
-    dispatch(ingredientChipCancelCounterPressed());
+    dispatch(filterChipCancelCounterPressed());
   }
   return (
     <Chip
