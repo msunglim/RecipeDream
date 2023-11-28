@@ -4,10 +4,14 @@ export function PageRemainTimer(visitedTime: Date, pageName: string) {
   const timeDifferenceInMillis = leaveTime.getTime() - visitedTime.getTime();
 
   // 밀리초를 다른 단위(초, 분, 시간)로 변환
-  const seconds = Math.floor(timeDifferenceInMillis / 1000);
-  const minutes = Math.floor(timeDifferenceInMillis / (1000 * 60));
   const hours = Math.floor(timeDifferenceInMillis / (1000 * 60 * 60));
+  const remainingMillisAfterHours = timeDifferenceInMillis % (1000 * 60 * 60);
 
+  const minutes = Math.floor(remainingMillisAfterHours / (1000 * 60));
+  const remainingMillisAfterMinutes = remainingMillisAfterHours % (1000 * 60);
+
+  const seconds = Math.floor(remainingMillisAfterMinutes / 1000);
+  
   console.log(
     `시간 차이: ${hours} 시간, ${minutes % 60} 분, ${seconds % 60} 초`,
   );
@@ -27,11 +31,11 @@ export function PageRemainTimer(visitedTime: Date, pageName: string) {
     },
     body: JSON.stringify(payload),
   })
-  .then(response => response.json())
-  .then(data => {
-    console.log('Success:', data);
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
 }

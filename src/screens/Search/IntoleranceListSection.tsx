@@ -1,5 +1,7 @@
 import {useEffect, useState} from 'react';
 import {Checkbox, List} from 'react-native-paper';
+import { useDispatch } from 'react-redux';
+import { intoleranceCheckboxCounterPressed } from './componentSlice';
 /**
  * 
  * @param props 
@@ -11,8 +13,9 @@ export function IntoleranceListSection(props: any) {
   const [intoleranceList, setIntoleranceList] = useState<string[]>(
     props.intoleranceList,
   );
-  
+  const dispatch = useDispatch()
   function toggle(item: string) {
+    dispatch(intoleranceCheckboxCounterPressed())
     let copy: string[] = [...props.intoleranceList];
     if (copy.includes(item)) {
       let newList = copy.filter(intolerance => item != intolerance);
