@@ -7,7 +7,7 @@ const initialState=  {
   includedIngredients : [],
   excludedIngredients: [],
   isPremiumUser: false,
-  maxLimit: 1
+  maxLimit: 10
 }
 export const ingredientSlice = createSlice({
   name: 'ingredient',
