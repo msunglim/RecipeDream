@@ -41,19 +41,27 @@ export function RecipePanel(props: any) {
         margin: 3,
         // borderColor: 'grey',
         // borderWidth: 1,
+        flex:1
       }}>
-      <HorizontalAlignView>
+      <HorizontalAlignView
+      style={{
+        flex:1
+      }}
+      >
         <Image
           style={{
             width: 150,
             height: 150,
+            flex:1,
             //   borderWidth: 1,
             //   borderColor: 'red',
             borderRadius: 15,
           }}
           source={{uri: image}}
         />
-        <View>
+        <View style={{
+          flex:1
+        }}>
           <LargeSizeText numberOfLines={2} style={{flexWrap: 'wrap'}}>
             {props.name}
           </LargeSizeText>

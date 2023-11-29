@@ -13,7 +13,7 @@ export function ComponentUsedCounter(count: number, componentName: string) {
   const payload = {
     componentName,
     count,
-    // version
+    version
   };
 
   fetch('http://localhost:3000/api/component-used', {

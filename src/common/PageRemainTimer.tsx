@@ -27,7 +27,7 @@ export function PageRemainTimer(visitedTime: Date, pageName: string) {
   const payload = {
     pageName: pageName,
     timeSpent: formattedTime,
-    // version: version
+    version: version
   };
 
   fetch('http://localhost:3000/api/page-remain-time', {
