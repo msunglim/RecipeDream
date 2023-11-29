@@ -5,7 +5,9 @@ const initialState=  {
   text:'',
   results: [],
   includedIngredients : [],
-  excludedIngredients: []
+  excludedIngredients: [],
+  isPremiumUser: false,
+  maxLimit: 10
 }
 export const ingredientSlice = createSlice({
   name: 'ingredient',
@@ -45,6 +47,9 @@ export const ingredientSlice = createSlice({
       state.text =''
       state.results =[]
     },
+    BePremiumUser:(state, action)=>{
+      state.isPremiumUser = true
+    },
     cancelAdding:(state, action)=>{
       state.text =''
       // state.results ={...action.payload.previous}
@@ -69,4 +74,5 @@ export const { removeIncluded } = ingredientSlice.actions
 export const { removeExcluded } = ingredientSlice.actions
 export const { resetKeyword } = ingredientSlice.actions
 export const { cancelAdding } = ingredientSlice.actions
+export const { BePremiumUser } = ingredientSlice.actions
 export default ingredientSlice.reducer

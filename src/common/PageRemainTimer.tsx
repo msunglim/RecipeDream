@@ -18,10 +18,16 @@ export function PageRemainTimer(visitedTime: Date, pageName: string) {
   //pageName과 함께 서버에 시간차 값 전송.
   //timeDifferenceInMillis 이걸 보내도 좋고, 따로 알아보기쉽게 hours:miniutes:seconds로 보내도 좋고.
 
+
+  
+  //이거를 서버에 올려서 b랑 분간을 해줘야함. 그래야 ab테스팅을 서로 분간해줄수잇음. 
+  //payload에 version으로 분간해주면 좋겠음. 
+  const version = 'A'
   const formattedTime = `${hours}:${minutes}:${seconds}`;
   const payload = {
     pageName: pageName,
     timeSpent: formattedTime,
+    version: version
   };
 
   fetch('http://localhost:3000/api/page-remain-time', {

@@ -110,6 +110,8 @@ function SearchResultPage(props: any): JSX.Element {
       try {
         const includedIngredients = included.join(','); // 포함할 재료를 쉼표로 구분하여 연결
         const excludedIngredients = excluded.join(','); // 제외할 재료를 쉼표로 구분하여 연결
+        const readyTime =(maxCookingTime==Number.POSITIVE_INFINITY)? 9999:maxCookingTime
+        const intolerances = intoleranceList.join(',')
         const url = `https://api.spoonacular.com/recipes/complexSearch`;
         const params = {
           apiKey: RECIPE_API_KEY,
@@ -118,7 +120,9 @@ function SearchResultPage(props: any): JSX.Element {
           includeIngredients: includedIngredients,
           excludeIngredients: excludedIngredients,
           sort: 'min-missing-ingredients', // 가장 적은 수의 누락된 재료를 가진 레시피가 먼저 나오도록 정렬
-          sortDirection: 'asc', // 오름차순 정렬
+          sortDirection: 'asc', // 오름차순 정렬,
+          maxReadyTime:readyTime,
+          // intolerances:intolerances
         };
         const response = await axios.get(url, {params});
         // console.log("검색결과리스트");
@@ -142,7 +146,7 @@ function SearchResultPage(props: any): JSX.Element {
       }
     };
     fetchRecipes();
-  }, [searchKeyword, included, excluded]);
+  }, [searchKeyword, included, excluded,maxCookingTime, intoleranceList]);
 
 
   return (
