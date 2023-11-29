@@ -25,7 +25,7 @@ function PremiumUserModal(props: SheetProps) {
             {message}
         </MiddleSizeText>
         <LargeSizeText>
-            JOIN UNLOCK UNLIMITED FEATURES!
+            UNLOCK UNLIMITED FEATURES!
         </LargeSizeText>
 
         <TouchableOpacity style={{
