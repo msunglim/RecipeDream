@@ -38,8 +38,8 @@ import {CommonButton} from '../../common/CommonButton';
 import {PageRemainTimer} from '../../common/PageRemainTimer';
 import {ComponentUsedCounter} from '../../common/ComponentUsedCounter';
 import {ExcuseMeVertically} from '../../common/ExcuseMeVertically';
-import { cookingTimeSettingTextinputCounterPressed } from './componentSlice';
-import { IntoleranceListSection } from './IntoleranceListSection';
+import {cookingTimeSettingTextinputCounterPressed} from './componentSlice';
+import {IntoleranceListSection} from './IntoleranceListSection';
 /*
 검색 첫페이지
 props contians ..
@@ -99,10 +99,12 @@ function SearchPage(props: any): JSX.Element {
       excluded: excluded,
       included: included,
       maxCookingTime: maxCookingTime,
-      intoleranceList:intoleranceList
+      intoleranceList: intoleranceList,
     });
   }
-
+  const isPremiumUser: boolean = useSelector(
+    (state: RootState) => state.ingredient.isPremiumUser,
+  );
   const [serachBarPressedCounter, setSearchBarPressedCounter] =
     useState<number>(0);
   const [
@@ -111,140 +113,149 @@ function SearchPage(props: any): JSX.Element {
   ] = useState<number>(0);
   const [goSearchButtonCounter, setGoSearchButtonCounter] = useState<number>(0);
 
-    //cooking time of recipes in result page will be less or equal to maxCookingTime.
-    const [maxCookingTime, setMaxCookingTime] = useState<number>(
-      Number.POSITIVE_INFINITY,
-    );
-    const [intoleranceList, setIntoleranceList] = useState<string[]>([])
+  //cooking time of recipes in result page will be less or equal to maxCookingTime.
+  const [maxCookingTime, setMaxCookingTime] = useState<number>(
+    Number.POSITIVE_INFINITY,
+  );
+  const [intoleranceList, setIntoleranceList] = useState<string[]>([]);
+  const [page, setPage] = useState<number>(0);
   return (
     <SheetProvider>
-      <TouchableWithoutFeedback
-        onPress={() => {
-          Keyboard.dismiss();
-        }}>
-        <View
-          style={{
-            height: '100%',
-            padding: '10%',
-            // borderColor: 'red',
-            // borderWidth: 10,
-          }}>
-          <MiddleSizeText>Search by name of plate</MiddleSizeText>
-          <ExcuseMeVertically />
-          <Searchbar
-            placeholder="Search for recipes"
-            onChangeText={onChangeSearch}
-            value={searchKeyword.toString()}
-            onFocus={() => {
-              setSearchBarPressedCounter(serachBarPressedCounter + 1);
-              ComponentUsedCounter(
-                serachBarPressedCounter + 1,
-                'dishNameSearchBarButton',
-              );
-              setIsSearchBarFocused(true);
-            }}
-            onBlur={() => {
-              setIsSearchBarFocused(false);
-            }}
-            onSubmitEditing={() => {
-              // console.log("검색할것", searchKeyword)
-            }}
-            autoCapitalize="none"
-          />
-          {isSearchBarFocused && (
+      
+          {page == 0 && (
+            <TouchableWithoutFeedback
+            onPress={() => {
+              Keyboard.dismiss();
+            }}>
             <View
               style={{
-                zIndex: 1,
+                height: '100%',
+                padding: '10%',
+                // borderColor: 'red',
+                // borderWidth: 10,
               }}>
-              <SearchBarResults
-                searchKeyword={searchKeyword}
-                searchResults={searchResults}
-                onPressEvent={onSearchBarResultPressEvent}
-                relatedRecommendedSearchResultPressedCounter={
-                  relatedRecommendedSearchResultPressedCounter
-                }
-                setRelatedRecommendedSearchResultPressedCounter={
-                  setRelatedRecommendedSearchResultPressedCounter
-                }
+              <MiddleSizeText>Search by name of plate</MiddleSizeText>
+              <ExcuseMeVertically />
+              <Searchbar
+                placeholder="Search for recipes"
+                onChangeText={onChangeSearch}
+                value={searchKeyword.toString()}
+                onFocus={() => {
+                  setSearchBarPressedCounter(serachBarPressedCounter + 1);
+                  ComponentUsedCounter(
+                    serachBarPressedCounter + 1,
+                    'dishNameSearchBarButton',
+                  );
+                  setIsSearchBarFocused(true);
+                }}
+                onBlur={() => {
+                  setIsSearchBarFocused(false);
+                }}
+                onSubmitEditing={() => {
+                  // console.log("검색할것", searchKeyword)
+                }}
+                autoCapitalize="none"
               />
-            </View>
-          )}
-          {/* included */}
-          <MiddleSizeText>Search by name of ingredients</MiddleSizeText>
-          <ExcuseMeVertically />
-          <IngredientsPanel
-          // type={0}
-          // relatedRecommendedSearchResultPressedCounter={
-          //   relatedRecommendedSearchResultPressedCounter
-          // }
-          // setRelatedRecommendedSearchResultPressedCounter={
-          //   setRelatedRecommendedSearchResultPressedCounter
-          // }
-          />
-          {/* excluded */}
-          {/* <IngredientsPanel
-            type={1}
-            relatedRecommendedSearchResultPressedCounter={
-              relatedRecommendedSearchResultPressedCounter
-            }
-            setRelatedRecommendedSearchResultPressedCounter={
-              setRelatedRecommendedSearchResultPressedCounter
-            }
-          /> */}
+              {isSearchBarFocused && (
+                <View
+                  style={{
+                    zIndex: 1,
+                  }}>
+                  <SearchBarResults
+                    searchKeyword={searchKeyword}
+                    searchResults={searchResults}
+                    onPressEvent={onSearchBarResultPressEvent}
+                    relatedRecommendedSearchResultPressedCounter={
+                      relatedRecommendedSearchResultPressedCounter
+                    }
+                    setRelatedRecommendedSearchResultPressedCounter={
+                      setRelatedRecommendedSearchResultPressedCounter
+                    }
+                  />
+                </View>
+              )}
 
-<HorizontalAlignView
-            style={{
-              justifyContent: 'space-between',
-            }}>
-              <HorizontalAlignView>
-                <IconButton icon={'clock-time-two-outline'}                
+              {/* included */}
+              <MiddleSizeText>Search by name of ingredients</MiddleSizeText>
+
+              <IngredientsPanel />
+              <CenterView
+                style={{
+                  margin: '10%',
+                }}>
+                <CommonButton
+                  text={'NEXT'}
+                  onPressEvent={() => {
+                    setPage(1);
+                  }}
                 />
-            <MiddleSizeText>cooking time less than</MiddleSizeText>
-            </HorizontalAlignView>
-            <TextInput
-              placeholder={'min'}
-              value={
-                maxCookingTime !== Number.POSITIVE_INFINITY 
-                  ? maxCookingTime.toString()
-                  : undefined
-              }
-              keyboardType="numeric"
-              onChangeText={t => {
-                dispatch(cookingTimeSettingTextinputCounterPressed())
-                if(t ==''){
-                  setMaxCookingTime(Number.POSITIVE_INFINITY);
-                }else{
-                  setMaxCookingTime(Number(t));
-                }
-                
-                
-              }}
-              style={{
-                borderColor: 'black',
-                borderWidth: 1,
-                borderRadius: 15,
-                textAlign: 'center',
-                textAlignVertical: 'center',
-                minWidth: 50,
-                maxWidth: 100,
-                flexGrow: 0,
-                marginRight:10
-              }}
-            />
-          </HorizontalAlignView>
-          <Divider />
-         <IntoleranceListSection
-         intoleranceList={intoleranceList}
-         setIntoleranceList={setIntoleranceList}
-         />
-          <CenterView
-            style={{
-              margin: '10%',
-            }}>
-            <CommonButton text={'Search'} onPressEvent={goSerach} />
-          </CenterView>
-        </View>
+              </CenterView>
+            </View>
       </TouchableWithoutFeedback>
+
+          )}
+          {page == 1 && (
+            <ScrollView>
+              {isPremiumUser && (
+                <HorizontalAlignView
+                  style={{
+                    justifyContent: 'space-between',
+                  }}>
+                  <HorizontalAlignView>
+                    <IconButton icon={'clock-time-two-outline'} />
+                    <MiddleSizeText>cooking time less than</MiddleSizeText>
+                  </HorizontalAlignView>
+                  <TextInput
+                    placeholder={'min'}
+                    value={
+                      maxCookingTime !== Number.POSITIVE_INFINITY
+                        ? maxCookingTime.toString()
+                        : undefined
+                    }
+                    keyboardType="numeric"
+                    onChangeText={t => {
+                      dispatch(cookingTimeSettingTextinputCounterPressed());
+                      if (t == '') {
+                        setMaxCookingTime(Number.POSITIVE_INFINITY);
+                      } else {
+                        setMaxCookingTime(Number(t));
+                      }
+                    }}
+                    style={{
+                      borderColor: 'black',
+                      borderWidth: 1,
+                      borderRadius: 15,
+                      textAlign: 'center',
+                      textAlignVertical: 'center',
+                      minWidth: 50,
+                      maxWidth: 100,
+                      flexGrow: 0,
+                      marginRight: 10,
+                    }}
+                  />
+                </HorizontalAlignView>
+              )}
+              {isPremiumUser && <Divider />}
+              <IntoleranceListSection
+                intoleranceList={intoleranceList}
+                setIntoleranceList={setIntoleranceList}
+              />
+              <CenterView
+                style={{
+                  margin: '10%',
+                }}>
+                <HorizontalAlignView>
+                  <CommonButton
+                    text={'PREV'}
+                    onPressEvent={() => {
+                      setPage(0);
+                    }}
+                  />
+                  <CommonButton text={'Search'} onPressEvent={goSerach} />
+                </HorizontalAlignView>
+              </CenterView>
+            </ScrollView>
+          )}
     </SheetProvider>
   );
 }

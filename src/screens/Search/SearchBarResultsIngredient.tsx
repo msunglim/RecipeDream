@@ -23,6 +23,7 @@ import {
   includeButtonCounterPressed,
 } from './componentSlice';
 import {addExcluded, addIncluded, resetKeyword} from './ingredientSlice';
+import {SheetManager} from 'react-native-actions-sheet';
 /**
    * 검색창에 뜨는 추천검색어들
    * @param props 
@@ -44,12 +45,18 @@ export function SearchBarResultsIngredient(props: any) {
   // function onChangeSearch(query: string) {
   //   dispatch(typing({text: query})); //키워드에 따른 text, results 스테이트 업데이트.
   // }
-//   console.log(
-//     'length:',
-//     props.searchKeyword.length,
-//     ' len',
-//     props.searchKeyword.length > 0 ? 200 : 0,
-//   );
+  //   console.log(
+  //     'length:',
+  //     props.searchKeyword.length,
+  //     ' len',
+  //     props.searchKeyword.length > 0 ? 200 : 0,
+  //   );
+  const included: string[] = useSelector(
+    (state: RootState) => state.ingredient.includedIngredients,
+  );
+  const excluded: string[] = useSelector(
+    (state: RootState) => state.ingredient.excludedIngredients,
+  );
   const dispatch = useDispatch();
   function include(item: string) {
     dispatch(includeButtonCounterPressed());
@@ -61,6 +68,12 @@ export function SearchBarResultsIngredient(props: any) {
     dispatch(addExcluded({ingredient: item}));
     dispatch(resetKeyword({}));
   }
+  const maxLimit: number = useSelector(
+    (state: RootState) => state.ingredient.maxLimit,
+  );
+  const isPremiumUser: boolean = useSelector(
+    (state: RootState) => state.ingredient.isPremiumUser,
+  );
   return (
     <FlatList
       keyboardShouldPersistTaps="handled"
@@ -81,14 +94,12 @@ export function SearchBarResultsIngredient(props: any) {
             backgroundColor: 'white',
             width: '100%',
           }}
-          activeOpacity={1}
-        >
+          activeOpacity={1}>
           <HorizontalAlignView
             style={{
               alignContent: 'space-between',
               justifyContent: 'space-between',
-            }}
-            >
+            }}>
             <MiddleSizeText>{item}</MiddleSizeText>
             <HorizontalAlignView
               style={{
@@ -99,14 +110,40 @@ export function SearchBarResultsIngredient(props: any) {
                 icon={'plus'}
                 iconColor={themeColorGreen}
                 onPress={() => {
-                  include(item);
+                  if (
+                    included.length + excluded.length + 1 > maxLimit &&
+                    !isPremiumUser
+                  ) {
+                    SheetManager.show('PremiumUserModal', {
+                      payload: {
+                        message:
+                          " You've used your free Ingredient Filters: " +
+                          maxLimit,
+                      },
+                    });
+                  } else {
+                    include(item);
+                  }
                 }}
               />
               <IconButton
                 icon={'close-thick'}
                 iconColor={'red'}
                 onPress={() => {
-                  exclude(item);
+                  if (
+                    included.length + excluded.length + 1 > maxLimit &&
+                    !isPremiumUser
+                  ) {
+                    SheetManager.show('PremiumUserModal', {
+                      payload: {
+                        message:
+                          " You've used your free Ingredient Filters: " +
+                          maxLimit,
+                      },
+                    });
+                  } else {
+                    exclude(item);
+                  }
                 }}
               />
             </HorizontalAlignView>
