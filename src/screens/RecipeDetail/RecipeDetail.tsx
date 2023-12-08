@@ -86,8 +86,7 @@ function RecipeDetail(props: any): JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const [visitedTime, setVisitedTime] = useState<Date>(new Date());
   function goBack() {
-    // PageRemainTimer(visitedTime, 'recipeDetailPage');
-    PageRemainTimer('00:00:20', 'recipeDetailPage');
+    PageRemainTimer(visitedTime, 'recipeDetailPage');
     navigation.goBack();
   }
   // const name: string = 'Cheesecake';

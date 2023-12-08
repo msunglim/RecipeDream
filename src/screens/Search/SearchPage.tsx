@@ -98,8 +98,7 @@ function SearchPage(props: any): JSX.Element {
     ComponentUsedCounter(goSearchButtonCounter + 1, 'goSearchButton');
 
 
-    // PageRemainTimer(visitedTime, 'searchPage');
-    PageRemainTimer('00:00:52', 'searchPage');
+    PageRemainTimer(visitedTime, 'searchPage');
 
 
     navigation.navigate('SearchResultPage', {

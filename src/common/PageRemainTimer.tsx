@@ -1,5 +1,5 @@
-// export function PageRemainTimer(visitedTime: Date, pageName: string) {
-  export function PageRemainTimer(visitedTime: string, pageName: string) {
+export function PageRemainTimer(visitedTime: Date, pageName: string) {
+  // export function PageRemainTimer(visitedTime: string, pageName: string) {
   // 두 날짜 간의 시간 차이를 밀리초로 계산
   // const leaveTime = new Date();
   // const timeDifferenceInMillis = leaveTime.getTime() - visitedTime.getTime();

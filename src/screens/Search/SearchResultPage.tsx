@@ -49,8 +49,7 @@ function SearchResultPage(props: any): JSX.Element {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [visitedTime, setVisitedTime] = useState<Date>(new Date());
   function goBack() {
-    // PageRemainTimer(visitedTime, 'searchResultPage');
-    PageRemainTimer('00:00:44', 'searchResultPage');
+    PageRemainTimer(visitedTime, 'searchResultPage');
     navigation.goBack();
   }
 
